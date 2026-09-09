@@ -1,0 +1,183 @@
+{
+  "spec": {
+    "space": "inference_grid",
+    "arm": "inference",
+    "sampler": "grid",
+    "objective": "infer_composite",
+    "objective_expr": "(1.0 - crps_fair / mae_adv) - 0.50 * abs(spread_rmse_ratio - spread_rmse_ideal)",
+    "gate": "none",
+    "gate_expr": "True",
+    "rungs": [
+      {
+        "name": "r0",
+        "rows": 3000,
+        "epochs": 0,
+        "sample_crops": 0,
+        "psd_crops": 0
+      }
+    ],
+    "eta": 3,
+    "seed": 0,
+    "sampler_seed": 0,
+    "n_trials": 24,
+    "psd_ceiling": 0.903,
+    "passthrough": [
+      "--ckpt",
+      "/home/users/dv321/dissertation_outputs/diffusion_ml_v2/ckpt_ep050.pt",
+      "--vae",
+      "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+      "--latents-dir",
+      "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+      "--split",
+      "val",
+      "--lead",
+      "60",
+      "--batch",
+      "16"
+    ],
+    "executor": "slurm",
+    "parallel": 2,
+    "prune": "none",
+    "git": "ae67b1d",
+    "created": "2026-08-10T20:00:43",
+    "space_note": "Stage 4 sampler sweep on a frozen checkpoint. One factor at a time around the production sampler setting.",
+    "reruns": 2,
+    "host": "sci-vm-01.jasmin.ac.uk"
+  },
+  "candidates": [
+    {
+      "params": {
+        "churn": 0.0,
+        "guidance": 1.0,
+        "members": 8,
+        "steps": 25
+      },
+      "origin": "incumbent",
+      "invalid": []
+    },
+    {
+      "params": {
+        "churn": 0.0,
+        "guidance": 1.0,
+        "members": 8,
+        "steps": 18
+      },
+      "origin": "ofat:steps",
+      "invalid": []
+    },
+    {
+      "params": {
+        "churn": 0.0,
+        "guidance": 1.0,
+        "members": 8,
+        "steps": 50
+      },
+      "origin": "ofat:steps",
+      "invalid": []
+    },
+    {
+      "params": {
+        "churn": 0.0,
+        "guidance": 1.0,
+        "members": 4,
+        "steps": 25
+      },
+      "origin": "ofat:members",
+      "invalid": []
+    },
+    {
+      "params": {
+        "churn": 0.0,
+        "guidance": 1.0,
+        "members": 16,
+        "steps": 25
+      },
+      "origin": "ofat:members",
+      "invalid": []
+    },
+    {
+      "params": {
+        "churn": 0.0,
+        "guidance": 1.25,
+        "members": 8,
+        "steps": 25
+      },
+      "origin": "ofat:guidance",
+      "invalid": []
+    },
+    {
+      "params": {
+        "churn": 0.0,
+        "guidance": 1.5,
+        "members": 8,
+        "steps": 25
+      },
+      "origin": "ofat:guidance",
+      "invalid": []
+    },
+    {
+      "params": {
+        "churn": 10.0,
+        "guidance": 1.0,
+        "members": 8,
+        "steps": 25
+      },
+      "origin": "ofat:churn",
+      "invalid": []
+    },
+    {
+      "params": {
+        "churn": 40.0,
+        "guidance": 1.0,
+        "members": 8,
+        "steps": 25
+      },
+      "origin": "ofat:churn",
+      "invalid": []
+    }
+  ],
+  "schedule": [
+    {
+      "rung": "r0",
+      "rows": 3000,
+      "epochs": 0,
+      "n_trials": 9,
+      "gpu_h": 9.02,
+      "gpu_h_per_trial": 1.002
+    }
+  ],
+  "gpu_h_planned": 9.02,
+  "gpu_h_if_full_fidelity": 0.0,
+  "example_cmd": [
+    "python",
+    "/home/users/dv321/dissertation/Code/3 - Diffusion stage/evaluate_diffusion.py",
+    "--churn",
+    "0.0",
+    "--guidance",
+    "1.0",
+    "--members",
+    "8",
+    "--steps",
+    "25",
+    "--limit",
+    "3000",
+    "--seed",
+    "0",
+    "--out",
+    "/home/users/dv321/dissertation_outputs/hpo/sampler/eval",
+    "--tag",
+    "_trial_000_r0",
+    "--ckpt",
+    "/home/users/dv321/dissertation_outputs/diffusion_ml_v2/ckpt_ep050.pt",
+    "--vae",
+    "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+    "--latents-dir",
+    "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+    "--split",
+    "val",
+    "--lead",
+    "60",
+    "--batch",
+    "16"
+  ]
+}

@@ -1,0 +1,49 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-d03109d8-21ac-0ab6-edbb-3953b3086d60)
+host gpuhost010.jc.rl.ac.uk | CUDA ok | Mon 10 Aug 00:00:24 BST 2026
+args: python Code/3 - Diffusion stage/pack_mu.py --reg /home/users/dv321/dissertation_outputs/regression_delta_ep17/reg_best.pt --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --out /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta --splits train,val --leads 15,30,45,60 --batch 256
+regression: /home/users/dv321/dissertation_outputs/regression_delta_ep17/reg_best.pt
+  epoch 2 | val_mse 0.30206 | 65.7M params | target=delta cond=full (20ch) | leads [15, 30, 45, 60]
+frozen regression sha b6867040dd4e | target=delta cond=full | out -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta
+[train_L15] 153473 rows -> (153473, 4, 64, 64) float16 (5.03 GB) on cuda ...
+  25600/153473 rows | 726 rows/s | eta 2.9 min
+  51200/153473 rows | 745 rows/s | eta 2.3 min
+  76800/153473 rows | 752 rows/s | eta 1.7 min
+  102400/153473 rows | 755 rows/s | eta 1.1 min
+  128000/153473 rows | 756 rows/s | eta 0.6 min
+[train_L15] sigma_data_resid 0.4335 (target sd 0.5800) | EV 0.4464 (variance-normalised 0.4413) | resid mean +0.00124 | 203s
+  spot check: 8/8 rows verified (worst |diff| 0.02495, tol 0.06)
+[train_L15] done -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta/train_mu_L15.npy (verified)
+[train_L30] 153473 rows -> (153473, 4, 64, 64) float16 (5.03 GB) on cuda ...
+  25600/153473 rows | 752 rows/s | eta 2.8 min
+  51200/153473 rows | 763 rows/s | eta 2.2 min
+  76800/153473 rows | 766 rows/s | eta 1.7 min
+  102400/153473 rows | 768 rows/s | eta 1.1 min
+  128000/153473 rows | 769 rows/s | eta 0.6 min
+[train_L30] sigma_data_resid 0.5148 (target sd 0.7073) | EV 0.4739 (variance-normalised 0.4703) | resid mean +0.00177 | 200s
+  spot check: 8/8 rows verified (worst |diff| 0.02240, tol 0.06)
+[train_L30] done -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta/train_mu_L30.npy (verified)
+[train_L45] 153473 rows -> (153473, 4, 64, 64) float16 (5.03 GB) on cuda ...
+  25600/153473 rows | 769 rows/s | eta 2.8 min
+  51200/153473 rows | 775 rows/s | eta 2.2 min
+  76800/153473 rows | 777 rows/s | eta 1.6 min
+  102400/153473 rows | 768 rows/s | eta 1.1 min
+  128000/153473 rows | 770 rows/s | eta 0.6 min
+[train_L45] sigma_data_resid 0.5671 (target sd 0.7921) | EV 0.4907 (variance-normalised 0.4875) | resid mean +0.00236 | 200s
+  spot check: 8/8 rows verified (worst |diff| 0.02542, tol 0.06)
+[train_L45] done -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta/train_mu_L45.npy (verified)
+[train_L60] 153473 rows -> (153473, 4, 64, 64) float16 (5.03 GB) on cuda ...
+  25600/153473 rows | 764 rows/s | eta 2.8 min
+  51200/153473 rows | 771 rows/s | eta 2.2 min
+  76800/153473 rows | 773 rows/s | eta 1.7 min
+  102400/153473 rows | 773 rows/s | eta 1.1 min
+  128000/153473 rows | 774 rows/s | eta 0.5 min
+[train_L60] sigma_data_resid 0.6053 (target sd 0.8546) | EV 0.5017 (variance-normalised 0.4984) | resid mean +0.00283 | 199s
+  spot check: 8/8 rows verified (worst |diff| 0.03335, tol 0.06)
+[train_L60] done -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta/train_mu_L60.npy (verified)
+[val_L15] already packed (13281 rows, same regression), skipping (use --force to redo)
+[val_L30] already packed (13281 rows, same regression), skipping (use --force to redo)
+[val_L45] already packed (13281 rows, same regression), skipping (use --force to redo)
+[val_L60] already packed (13281 rows, same regression), skipping (use --force to redo)
+
+pooled over the packed TRAIN shards: sigma_data_resid 0.5341. This is the number train_corrdiff.py will read; the EDM weighted loss should start near 1.0 with it.
+per shard: train_L15 EV 0.4464 sd' 0.4335, train_L30 EV 0.4739 sd' 0.5148, train_L45 EV 0.4907 sd' 0.5671, train_L60 EV 0.5017 sd' 0.6053, val_L15 EV 0.4253 sd' 0.4402, val_L30 EV 0.4533 sd' 0.5272, val_L45 EV 0.4669 sd' 0.5854, val_L60 EV 0.4771 sd' 0.6276

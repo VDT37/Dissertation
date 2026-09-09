@@ -1,0 +1,56 @@
+{
+  "reason": "completed",
+  "epochs_run": 4,
+  "best": 0.3702355544617836,
+  "best_ep": 4,
+  "wall_min": 33.3,
+  "last_sampled": {
+    "mae": 0.25921829586150125,
+    "mae_adv": 0.27017922612139955,
+    "crps": 0.18803658600275716,
+    "crps_adv": 0.27017922612139955,
+    "n_crops": 96,
+    "n_members": 8,
+    "csi_1": 0.44660417290822174,
+    "csi_1_adv": 0.422039892280818,
+    "csi_8": 0.09562906083874778,
+    "csi_8_adv": 0.10292054584874379,
+    "psd_ratio_2_8km": 0.5010711085317517
+  },
+  "config": {
+    "width": 128,
+    "mults": "1,2,4",
+    "attn": "16",
+    "leads": [
+      15,
+      30,
+      45,
+      60
+    ],
+    "dropout": 0.0,
+    "cond_mode": "full",
+    "cond_drop": 0.1,
+    "lr": 0.0001,
+    "warmup": 937,
+    "lr_schedule": "cosine",
+    "batch": 64,
+    "weight_decay": 0.01,
+    "ema_decay": 0.999,
+    "p_mean": -1.2,
+    "p_std": 1.2,
+    "sigma_data": 0.7407157669433166,
+    "latent_scale": 0.784153104050921,
+    "norm": {
+      "mean": -11.880375862121582,
+      "std": 6.110200881958008
+    },
+    "seed": 0,
+    "epochs": 4,
+    "limit": 150000,
+    "vae_sha256": "39141af7c41ddd4658cde14b76d10c604c7628b7a2dad744cd5de885c429bcb0",
+    "git": "ae67b1d",
+    "n_train": 150000,
+    "n_val": 15000,
+    "n_params": 65741700
+  }
+}

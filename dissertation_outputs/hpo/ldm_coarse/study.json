@@ -1,0 +1,53 @@
+{
+  "space": "ldm_coarse",
+  "arm": "ldm",
+  "sampler": "grid",
+  "objective": "composite",
+  "objective_expr": "(1.0 - crps / crps_adv) - 0.25 * abs(psd_ratio_2_8km - psd_ceiling)",
+  "gate": "mae_vs_adv",
+  "gate_expr": "mae <= 1.01 * mae_adv",
+  "rungs": [
+    {
+      "name": "r0",
+      "rows": 60000,
+      "epochs": 3,
+      "sample_crops": 96,
+      "psd_crops": 96
+    },
+    {
+      "name": "r1",
+      "rows": 150000,
+      "epochs": 4,
+      "sample_crops": 96,
+      "psd_crops": 96
+    },
+    {
+      "name": "r2",
+      "rows": 613892,
+      "epochs": 6,
+      "sample_crops": 128,
+      "psd_crops": 128
+    }
+  ],
+  "eta": 3,
+  "seed": 0,
+  "sampler_seed": 0,
+  "n_trials": 24,
+  "psd_ceiling": 0.903,
+  "passthrough": [
+    "--latents-dir",
+    "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+    "--vae",
+    "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+    "--leads",
+    "15,30,45,60"
+  ],
+  "executor": "slurm",
+  "parallel": 2,
+  "prune": "none",
+  "git": "ae67b1d",
+  "created": "2026-08-10T19:58:53",
+  "space_note": "Stage 1 coarse screen, one factor at a time around the ml_v2 incumbent, plus two small cartesian blocks where an interaction is expected on physical grounds.",
+  "reruns": 2,
+  "host": "sci-vm-01.jasmin.ac.uk"
+}

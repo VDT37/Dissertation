@@ -1,0 +1,13 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-39654f8c-bd82-3249-df9e-81e79ef6dee9)
+host gpuhost009.jc.rl.ac.uk | CUDA ok | Mon 10 Aug 23:08:33 BST 2026
+args: python /home/users/dv321/dissertation/Code/3 - Diffusion stage/evaluate_diffusion.py --churn 0.0 --guidance 1.25 --members 8 --steps 25 --limit 3000 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/sampler/eval --tag _trial_005_r0 --ckpt /home/users/dv321/dissertation_outputs/diffusion_ml_v2/ckpt_ep050.pt --vae --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --split val --lead 60 --batch 16
+usage: evaluate_diffusion.py [-h] [--ckpt CKPT] [--vae VAE]
+                             [--latents-dir LATENTS_DIR] [--mu-dir MU_DIR]
+                             [--reg-sha REG_SHA] [--split {val,train,test}]
+                             [--lead LEAD] [--members MEMBERS] [--steps STEPS]
+                             [--guidance GUIDANCE] [--churn CHURN]
+                             [--batch BATCH] [--limit LIMIT]
+                             [--fss-sample FSS_SAMPLE]
+                             [--psd-sample PSD_SAMPLE] [--seed SEED]
+                             [--out OUT] [--tag TAG] [--allow-vae-mismatch]
+evaluate_diffusion.py: error: argument --vae: expected one argument

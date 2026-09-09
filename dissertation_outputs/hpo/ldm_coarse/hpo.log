@@ -1,0 +1,348 @@
+
+=== study ldm_coarse :: arm ldm :: sampler grid :: git aeda1f4 ===
+objective (maximised): composite = (1.0 - crps / crps_adv) - 0.25 * abs(psd_ratio_2_8km - psd_ceiling)
+        admissibility: mae_vs_adv = mae <= 1.01 * mae_adv
+           rung ladder: r0(60000x3), r1(150000x4), r2(613892x6)
+
+25 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:width             width=96
+    2 ofat:width             width=192
+    3 ofat:mults             mults=1,2,2,4
+    4 ofat:attn              attn=16,32
+    5 ofat:dropout           dropout=0.05
+    6 ofat:dropout           dropout=0.1
+    7 ofat:weight_decay      weight_decay=0.0001
+    8 ofat:weight_decay      weight_decay=0.01
+    9 ofat:p_mean            p_mean=-1.6
+   10 ofat:p_mean            p_mean=-0.81
+   11 ofat:p_std             p_std=1.6
+   12 block:lr_x_batch       batch=32, lr=5e-05
+   13 block:lr_x_batch       lr=5e-05
+   14 block:lr_x_batch       batch=128, lr=5e-05
+   15 block:lr_x_batch       batch=32
+   16 block:lr_x_batch       batch=128
+   17 block:lr_x_batch       batch=32, lr=0.0002
+   18 block:lr_x_batch       lr=0.0002
+   19 block:lr_x_batch       batch=128, lr=0.0002
+   20 block:conditioning     cond_drop=0.0
+   21 block:conditioning     cond_drop=0.2
+   22 block:conditioning     cond_drop=0.0, cond_mode=a-only
+   23 block:conditioning     cond_mode=a-only
+   24 block:conditioning     cond_drop=0.2, cond_mode=a-only
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       3      25        0.204     5.10
+  r1       150000       4       8        0.637     5.10
+  r2       613892       6       2        2.567     5.13
+  TOTAL                                           15.33
+
+  the same 25 configurations trained to 50 epochs at full fidelity: 723 A100-hours
+  multi-fidelity screening cost: 15.3 A100-hours (2.1 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  /home/users/dv321/miniforge3/envs/nowcast/bin/python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_ldm.py' --attn 16 --batch 64 --cond-drop 0.1 --cond-mode full --dropout 0.0 --lr 0.0001 --mults 1,2,4 --p-mean -1.2 --p-std 1.2 --weight-decay 0.0 --width 128 --limit 60000 --epochs 3 --warmup 281 --psd-crops 96 --patience 0 --no-keep-sampled --sample-every 3 --sample-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/ldm_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60
+
+
+dry run: plan written to /home/users/dv321/dissertation_outputs/hpo/ldm_coarse/plan.json. Re-run with --exec slurm (JASMIN) or --exec local (L4) to execute.
+
+=== study ldm_coarse :: arm ldm :: sampler grid :: git ae67b1d ===
+objective (maximised): composite = (1.0 - crps / crps_adv) - 0.25 * abs(psd_ratio_2_8km - psd_ceiling)
+        admissibility: mae_vs_adv = mae <= 1.01 * mae_adv
+           rung ladder: r0(60000x3), r1(150000x4), r2(613892x6)
+
+25 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:width             width=96
+    2 ofat:width             width=192
+    3 ofat:mults             mults=1,2,2,4
+    4 ofat:attn              attn=16,32
+    5 ofat:dropout           dropout=0.05
+    6 ofat:dropout           dropout=0.1
+    7 ofat:weight_decay      weight_decay=0.0001
+    8 ofat:weight_decay      weight_decay=0.01
+    9 ofat:p_mean            p_mean=-1.6
+   10 ofat:p_mean            p_mean=-0.81
+   11 ofat:p_std             p_std=1.6
+   12 block:lr_x_batch       batch=32, lr=5e-05
+   13 block:lr_x_batch       lr=5e-05
+   14 block:lr_x_batch       batch=128, lr=5e-05
+   15 block:lr_x_batch       batch=32
+   16 block:lr_x_batch       batch=128
+   17 block:lr_x_batch       batch=32, lr=0.0002
+   18 block:lr_x_batch       lr=0.0002
+   19 block:lr_x_batch       batch=128, lr=0.0002
+   20 block:conditioning     cond_drop=0.0
+   21 block:conditioning     cond_drop=0.2
+   22 block:conditioning     cond_drop=0.0, cond_mode=a-only
+   23 block:conditioning     cond_mode=a-only
+   24 block:conditioning     cond_drop=0.2, cond_mode=a-only
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       3      25        0.204     5.10
+  r1       150000       4       8        0.637     5.10
+  r2       613892       6       2        2.567     5.13
+  TOTAL                                           15.33
+
+  the same 25 configurations trained to 50 epochs at full fidelity: 723 A100-hours
+  multi-fidelity screening cost: 15.3 A100-hours (2.1 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_ldm.py' --attn 16 --batch 64 --cond-drop 0.1 --cond-mode full --dropout 0.0 --lr 0.0001 --mults 1,2,4 --p-mean -1.2 --p-std 1.2 --weight-decay 0.0 --width 128 --limit 60000 --epochs 3 --warmup 281 --psd-crops 96 --patience 0 --no-keep-sampled --sample-every 3 --sample-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/ldm_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60
+
+
+---- rung r0 (60000 rows x 3 epochs) :: 25 trials ----
+  submitted trial_000_r0 as job 45212102
+  submitted trial_001_r0 as job 45212103
+  submitted trial_002_r0 as job 45212104
+  submitted trial_003_r0 as job 45212105
+  trial_001_r0             ok         objective    0.21973 gate pass 9.0 min
+  submitted trial_004_r0 as job 45213872
+  trial_003_r0             ok         objective    0.22755 gate pass 11.0 min
+  submitted trial_005_r0 as job 45213916
+  trial_000_r0             ok         objective    0.23131 gate pass 12.0 min
+  submitted trial_006_r0 as job 45214218
+  trial_002_r0             ok         objective    0.26005 gate pass 19.0 min
+  submitted trial_007_r0 as job 45215440
+  trial_005_r0             ok         objective    0.20409 gate pass 12.0 min
+  submitted trial_008_r0 as job 45216174
+  trial_006_r0             ok         objective    0.19966 gate pass 12.0 min
+  submitted trial_009_r0 as job 45216180
+  trial_004_r0             ok         objective    0.20111 gate pass 17.0 min
+  submitted trial_010_r0 as job 45216199
+  trial_007_r0             ok         objective    0.22512 gate pass 12.0 min
+  submitted trial_011_r0 as job 45216973
+  trial_008_r0             ok         objective    0.23190 gate pass 12.0 min
+  submitted trial_012_r0 as job 45217751
+  trial_009_r0             ok         objective    0.21720 gate pass 12.0 min
+  submitted trial_013_r0 as job 45217758
+  trial_010_r0             ok         objective    0.23308 gate pass 12.0 min
+  submitted trial_014_r0 as job 45218475
+  trial_011_r0             ok         objective    0.22640 gate pass 12.0 min
+  submitted trial_015_r0 as job 45219357
+  trial_012_r0             ok         objective    0.23485 gate pass 13.0 min
+  trial_013_r0             ok         objective    0.23947 gate pass 12.0 min
+  submitted trial_016_r0 as job 45220127
+  submitted trial_017_r0 as job 45220128
+  trial_014_r0             ok         objective    0.03370 gate FAIL 11.0 min
+  submitted trial_018_r0 as job 45220140
+  trial_015_r0             ok         objective    0.24116 gate pass 13.0 min
+  submitted trial_019_r0 as job 45221018
+  trial_016_r0             ok         objective    0.24456 gate pass 11.0 min
+  submitted trial_020_r0 as job 45221831
+  trial_017_r0             ok         objective    0.25315 gate pass 13.0 min
+  trial_018_r0             ok         objective    0.21691 gate pass 12.0 min
+  submitted trial_021_r0 as job 45221857
+  submitted trial_022_r0 as job 45221858
+  trial_019_r0             ok         objective    0.22151 gate pass 11.0 min
+  submitted trial_023_r0 as job 45222847
+  trial_020_r0             ok         objective    0.20826 gate pass 12.0 min
+  submitted trial_024_r0 as job 45224009
+  trial_021_r0             ok         objective    0.22176 gate pass 12.0 min
+  trial_022_r0             ok         objective    0.21985 gate pass 12.0 min
+  trial_023_r0             ok         objective    0.21941 gate pass 11.0 min
+  trial_024_r0             ok         objective    0.20974 gate pass 12.4 min
+  rung r0 ranking: 002(0.2600), 017(0.2531), 016(0.2446), 015(0.2412), 013(0.2395), 012(0.2349)
+
+---- rung r1 (150000 rows x 4 epochs) :: 8 trials ----
+  submitted trial_002_r1 as job 45226900
+  submitted trial_017_r1 as job 45226901
+  submitted trial_016_r1 as job 45226902
+  submitted trial_015_r1 as job 45226903
+  trial_016_r1             ok         objective    0.18527 gate pass 31.7 min
+  submitted trial_013_r1 as job 45235113
+  trial_017_r1             ok         objective    0.27223 gate pass 37.7 min
+  trial_015_r1             ok         objective    0.25708 gate pass 37.7 min
+  submitted trial_012_r1 as job 45235927
+  submitted trial_010_r1 as job 45235928
+  trial_013_r1             ok         objective    0.18711 gate pass 65.4 min
+  trial_012_r1             ok         objective    0.21175 gate pass 59.6 min
+  trial_010_r1             ok         objective    0.22272 gate pass 59.6 min
+  submitted trial_008_r1 as job 45248161
+
+=== study ldm_coarse :: arm ldm :: sampler grid :: git ae67b1d ===
+objective (maximised): composite = (1.0 - crps / crps_adv) - 0.25 * abs(psd_ratio_2_8km - psd_ceiling)
+        admissibility: mae_vs_adv = mae <= 1.01 * mae_adv
+           rung ladder: r0(60000x3), r1(150000x4), r2(613892x6)
+
+25 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:width             width=96
+    2 ofat:width             width=192
+    3 ofat:mults             mults=1,2,2,4
+    4 ofat:attn              attn=16,32
+    5 ofat:dropout           dropout=0.05
+    6 ofat:dropout           dropout=0.1
+    7 ofat:weight_decay      weight_decay=0.0001
+    8 ofat:weight_decay      weight_decay=0.01
+    9 ofat:p_mean            p_mean=-1.6
+   10 ofat:p_mean            p_mean=-0.81
+   11 ofat:p_std             p_std=1.6
+   12 block:lr_x_batch       batch=32, lr=5e-05
+   13 block:lr_x_batch       lr=5e-05
+   14 block:lr_x_batch       batch=128, lr=5e-05
+   15 block:lr_x_batch       batch=32
+   16 block:lr_x_batch       batch=128
+   17 block:lr_x_batch       batch=32, lr=0.0002
+   18 block:lr_x_batch       lr=0.0002
+   19 block:lr_x_batch       batch=128, lr=0.0002
+   20 block:conditioning     cond_drop=0.0
+   21 block:conditioning     cond_drop=0.2
+   22 block:conditioning     cond_drop=0.0, cond_mode=a-only
+   23 block:conditioning     cond_mode=a-only
+   24 block:conditioning     cond_drop=0.2, cond_mode=a-only
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       3      25        0.198     4.95
+  r1       150000       4       8        0.616     4.93
+  r2       613892       6       2        2.877     5.75
+  TOTAL                                           15.63
+
+  the same 25 configurations trained to 50 epochs at full fidelity: 702 A100-hours
+  multi-fidelity screening cost: 15.6 A100-hours (2.2 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_ldm.py' --attn 16 --batch 64 --cond-drop 0.1 --cond-mode full --dropout 0.0 --lr 0.0001 --mults 1,2,4 --p-mean -1.2 --p-std 1.2 --weight-decay 0.0 --width 128 --limit 60000 --epochs 3 --warmup 281 --psd-crops 96 --patience 0 --no-keep-sampled --sample-every 3 --sample-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/ldm_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60
+
+
+---- rung r0 (60000 rows x 3 epochs) :: 25 trials ----
+  resume: trial_000_r0 already has its completion marker, skipping
+  resume: trial_001_r0 already has its completion marker, skipping
+  resume: trial_002_r0 already has its completion marker, skipping
+  resume: trial_003_r0 already has its completion marker, skipping
+  resume: trial_004_r0 already has its completion marker, skipping
+  resume: trial_005_r0 already has its completion marker, skipping
+  resume: trial_006_r0 already has its completion marker, skipping
+  resume: trial_007_r0 already has its completion marker, skipping
+  resume: trial_008_r0 already has its completion marker, skipping
+  resume: trial_009_r0 already has its completion marker, skipping
+  resume: trial_010_r0 already has its completion marker, skipping
+  resume: trial_011_r0 already has its completion marker, skipping
+  resume: trial_012_r0 already has its completion marker, skipping
+  resume: trial_013_r0 already has its completion marker, skipping
+  resume: trial_014_r0 already has its completion marker, skipping
+  resume: trial_015_r0 already has its completion marker, skipping
+  resume: trial_016_r0 already has its completion marker, skipping
+  resume: trial_017_r0 already has its completion marker, skipping
+  resume: trial_018_r0 already has its completion marker, skipping
+  resume: trial_019_r0 already has its completion marker, skipping
+  resume: trial_020_r0 already has its completion marker, skipping
+  resume: trial_021_r0 already has its completion marker, skipping
+  resume: trial_022_r0 already has its completion marker, skipping
+  resume: trial_023_r0 already has its completion marker, skipping
+  resume: trial_024_r0 already has its completion marker, skipping
+  rung r0 ranking: 002(0.2600), 017(0.2531), 016(0.2446), 015(0.2412), 013(0.2395), 012(0.2349)
+
+---- rung r1 (150000 rows x 4 epochs) :: 8 trials ----
+  resume: trial_002_r1 already has its completion marker, skipping
+  resume: trial_017_r1 already has its completion marker, skipping
+  resume: trial_016_r1 already has its completion marker, skipping
+  resume: trial_015_r1 already has its completion marker, skipping
+  resume: trial_013_r1 already has its completion marker, skipping
+  resume: trial_012_r1 already has its completion marker, skipping
+  resume: trial_010_r1 already has its completion marker, skipping
+  resume: trial_008_r1 already has its completion marker, skipping
+  rung r1 ranking: 017(0.2722), 015(0.2571), 002(0.2316), 010(0.2227), 012(0.2118), 008(0.2035)
+
+---- rung r2 (613892 rows x 6 epochs) :: 2 trials ----
+  submitted trial_017_r2 as job 45438719
+  submitted trial_015_r2 as job 45438720
+
+=== study ldm_coarse :: arm ldm :: sampler grid :: git 6f64654 ===
+objective (maximised): composite = (1.0 - crps / crps_adv) - 0.25 * abs(psd_ratio_2_8km - psd_ceiling)
+        admissibility: mae_vs_adv = mae <= 1.01 * mae_adv
+           rung ladder: r0(60000x3), r1(150000x4), r2(613892x6)
+
+25 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:width             width=96
+    2 ofat:width             width=192
+    3 ofat:mults             mults=1,2,2,4
+    4 ofat:attn              attn=16,32
+    5 ofat:dropout           dropout=0.05
+    6 ofat:dropout           dropout=0.1
+    7 ofat:weight_decay      weight_decay=0.0001
+    8 ofat:weight_decay      weight_decay=0.01
+    9 ofat:p_mean            p_mean=-1.6
+   10 ofat:p_mean            p_mean=-0.81
+   11 ofat:p_std             p_std=1.6
+   12 block:lr_x_batch       batch=32, lr=5e-05
+   13 block:lr_x_batch       lr=5e-05
+   14 block:lr_x_batch       batch=128, lr=5e-05
+   15 block:lr_x_batch       batch=32
+   16 block:lr_x_batch       batch=128
+   17 block:lr_x_batch       batch=32, lr=0.0002
+   18 block:lr_x_batch       lr=0.0002
+   19 block:lr_x_batch       batch=128, lr=0.0002
+   20 block:conditioning     cond_drop=0.0
+   21 block:conditioning     cond_drop=0.2
+   22 block:conditioning     cond_drop=0.0, cond_mode=a-only
+   23 block:conditioning     cond_mode=a-only
+   24 block:conditioning     cond_drop=0.2, cond_mode=a-only
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       3      25        0.198     4.95
+  r1       150000       4       8        0.616     4.93
+  r2       613892       6       2        2.877     5.75
+  TOTAL                                           15.63
+
+  the same 25 configurations trained to 50 epochs at full fidelity: 702 A100-hours
+  multi-fidelity screening cost: 15.6 A100-hours (2.2 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_ldm.py' --attn 16 --batch 64 --cond-drop 0.1 --cond-mode full --dropout 0.0 --lr 0.0001 --mults 1,2,4 --p-mean -1.2 --p-std 1.2 --weight-decay 0.0 --width 128 --limit 60000 --epochs 3 --warmup 281 --psd-crops 96 --patience 0 --no-keep-sampled --sample-every 3 --sample-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/ldm_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60
+
+
+---- rung r0 (60000 rows x 3 epochs) :: 25 trials ----
+  resume: trial_000_r0 already has its completion marker, skipping
+  resume: trial_001_r0 already has its completion marker, skipping
+  resume: trial_002_r0 already has its completion marker, skipping
+  resume: trial_003_r0 already has its completion marker, skipping
+  resume: trial_004_r0 already has its completion marker, skipping
+  resume: trial_005_r0 already has its completion marker, skipping
+  resume: trial_006_r0 already has its completion marker, skipping
+  resume: trial_007_r0 already has its completion marker, skipping
+  resume: trial_008_r0 already has its completion marker, skipping
+  resume: trial_009_r0 already has its completion marker, skipping
+  resume: trial_010_r0 already has its completion marker, skipping
+  resume: trial_011_r0 already has its completion marker, skipping
+  resume: trial_012_r0 already has its completion marker, skipping
+  resume: trial_013_r0 already has its completion marker, skipping
+  resume: trial_014_r0 already has its completion marker, skipping
+  resume: trial_015_r0 already has its completion marker, skipping
+  resume: trial_016_r0 already has its completion marker, skipping
+  resume: trial_017_r0 already has its completion marker, skipping
+  resume: trial_018_r0 already has its completion marker, skipping
+  resume: trial_019_r0 already has its completion marker, skipping
+  resume: trial_020_r0 already has its completion marker, skipping
+  resume: trial_021_r0 already has its completion marker, skipping
+  resume: trial_022_r0 already has its completion marker, skipping
+  resume: trial_023_r0 already has its completion marker, skipping
+  resume: trial_024_r0 already has its completion marker, skipping
+  rung r0 ranking: 002(0.2600), 017(0.2531), 016(0.2446), 015(0.2412), 013(0.2395), 012(0.2349)
+
+---- rung r1 (150000 rows x 4 epochs) :: 8 trials ----
+  resume: trial_002_r1 already has its completion marker, skipping
+  resume: trial_017_r1 already has its completion marker, skipping
+  resume: trial_016_r1 already has its completion marker, skipping
+  resume: trial_015_r1 already has its completion marker, skipping
+  resume: trial_013_r1 already has its completion marker, skipping
+  resume: trial_012_r1 already has its completion marker, skipping
+  resume: trial_010_r1 already has its completion marker, skipping
+  resume: trial_008_r1 already has its completion marker, skipping
+  rung r1 ranking: 017(0.2722), 015(0.2571), 002(0.2316), 010(0.2227), 012(0.2118), 008(0.2035)
+
+---- rung r2 (613892 rows x 6 epochs) :: 2 trials ----
+  resume: trial_017_r2 already has its completion marker, skipping
+  resume: trial_015_r2 already has its completion marker, skipping
+  rung r2 ranking: 015(0.3430), 017(0.3251)
+
+BEST: trial_015_r2  objective 0.3429992151291398
+  differs from the incumbent on: batch=32
+
+Confirm it at full fidelity before quoting it. A screening rung is a ranking statistic, not a result.
+  estimated cost: 30.1 A100-hours
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_ldm.py' --attn 16 --batch 32 --cond-drop 0.1 --cond-mode full --dropout 0.0 --lr 0.0001 --mults 1,2,4 --p-mean -1.2 --p-std 1.2 --weight-decay 0.0 --width 128 --epochs 50 --warmup 1000 --psd-crops 64 --patience 15 --sample-every 5 --sample-crops 16 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/ldm_coarse_winner --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60
+
+total measured GPU time this study: 8.10 hours
+next: python hpo_report.py --study /home/users/dv321/dissertation_outputs/hpo/ldm_coarse

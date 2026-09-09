@@ -1,0 +1,130 @@
+Jasmin commands
+
+sacct -u $USER -X   --starttime 2026-08-09   --format=JobID,JobName,State,Elapsed
+
+ssh jasmin
+ssh-add -l # check the authentication agent
+
+sci-server:
+ssh dv321@sci-vm-01.jasmin.ac.uk
+
+useraccounts
+
+---------------
+# Print working directory:
+pwd
+
+--------------
+## MOVE AROUND
+# Go to root level
+cd /
+
+# Go to home directory
+cd  ~
+
+# Important directories in Jasmin:
+/home/users/$USER          # your home
+/work/scratch-pw4/$USER    # scratch storage
+/work/scratch-nopw2/$USER  # SSD scratch
+/work/scratch-nopw2/$USER/dissertation
+/apps/jasmin               # installed software
+/tmp                       # temporary storage
+------------------
+
+# See file system usage:
+df -h
+
+# Check available space in Scratch
+df -h /work/scratch-pw4
+
+# See directory sizes
+du -sh .
+
+# See home folder size
+du -sh ~
+------------------
+
+## CREATING DIRECTORIES
+
+mkdir test
+
+# in Scratch:
+mkdir -p /work/scratch-pw4/$USER/tmp 
+
+-----------------
+## COPY FILES
+
+cp file.txt backup.txt
+ 
+# Copy directory
+cp -r data data_backup
+
+# Copy from server
+scp -r dv321@xfer-vm-01.jasmin.ac.uk:~/dissertation_outputs/vae_v2 .
+
+-------------------
+## Move / Rename
+mv old.txt new.txt
+
+# Move to another folder
+mv file.txt ~/dissertation/
+
+--------------
+## Remove file and directory
+
+rm file.txt
+rm -r directory
+
+-----------
+## MONITORING 
+
+# Monitoring the Jobs
+squeue -u $USER
+
+# Watch the queue live
+watch -n 5 "squeue -u $USER"
+
+# View the log (Recommended)
+tail -f <jobname>-<job id>.out
+
+# Check GPU usage while job is running
+srun --jobid <job id> --pty nvidia-smi
+
+# Inspect the memory usage of the job: Important field is MaxRSS, tells how much RAM it consuemed so that we can either increase the RAM or reduce the workers
+sacct -j 42124194 --format=JobID,State,Elapsed,MaxRSS
+
+sacct -j 42135052 \
+  --format=JobID,JobName,State,Elapsed,MaxRSS,AveRSS,CPUTime,TotalCPU
+
+# When job is running, open second terminal and watch memory usage
+watch -n 30 'sstat -j 42128483.batch --format=MaxRSS'
+
+## IF IT IS PENDING:
+# Refresh the jobs queue every few seconds:
+watch -n 10 "squeue -u $USER"
+
+# Estimate when the job might start if it is pending
+squeue -j <jobid> --start
+
+# Check orchid availability
+sinfo -p orchid
+
+# Find recent jobs
+sacct -u dv321
+
+# Show all jobs from the last few days
+sacct -u $USER -X \
+  --starttime 2026-07-01 \
+  --format=JobID,JobName,State,Elapsed,End \
+  | grep COMPLETED
+
+# Kill a submitted job:
+scancel <jobid>
+
+--------------
+## NANO Editor
+# Once the editing is done
+exit by: 
+ctrl + O -> Save
+Enter
+ctrl + X 

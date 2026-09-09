@@ -1,0 +1,166 @@
+{
+  "study": "/home/users/dv321/dissertation_outputs/hpo/reg_coarse",
+  "spec": {
+    "space": "regression_coarse",
+    "arm": "regression",
+    "sampler": "grid",
+    "objective": "val_ev",
+    "objective_expr": "val_ev",
+    "gate": "gate_c",
+    "gate_expr": "val_ev >= 0.10",
+    "rungs": [
+      {
+        "name": "r0",
+        "rows": 60000,
+        "epochs": 2,
+        "sample_crops": 96,
+        "psd_crops": 96
+      },
+      {
+        "name": "r1",
+        "rows": 200000,
+        "epochs": 3,
+        "sample_crops": 96,
+        "psd_crops": 96
+      }
+    ],
+    "eta": 3,
+    "seed": 0,
+    "sampler_seed": 0,
+    "n_trials": 24,
+    "psd_ceiling": 0.903,
+    "passthrough": [
+      "--latents-dir",
+      "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+      "--vae",
+      "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+      "--leads",
+      "15,30,45,60",
+      "--target",
+      "delta",
+      "--cond-mode",
+      "full"
+    ],
+    "executor": "slurm",
+    "parallel": 4,
+    "prune": "none",
+    "git": "ae67b1d",
+    "created": "2026-08-10T20:08:53",
+    "space_note": "Screen for the deterministic conditional-mean network that feeds the CorrDiff arm. No noise schedule here: this net is trained under a plain regression loss, so the searchable set is optimisation and capacity only.",
+    "reruns": 4,
+    "host": "sci-vm-01.jasmin.ac.uk"
+  },
+  "n_trials": 12,
+  "n_gate_pass": 12,
+  "best": {
+    "trial": "trial_005_r1",
+    "rung": "r1",
+    "origin": "ofat:width",
+    "changed": "width=192",
+    "objective": 0.44958558084483413,
+    "gate": true,
+    "mae": 0.1888051392355313,
+    "mae_over_adv": 0.7727292268649383,
+    "mae_over_pers": 0.5427550258598618,
+    "crps": null,
+    "crps_ss_adv": null,
+    "crps_ss_pers": null,
+    "csi_1": 0.4868018421784688,
+    "csi_8": 0.08592572289982184,
+    "psd": 0.08974241167440102,
+    "val_loss": null,
+    "gpu_h": 0.9516666666666667,
+    "params": {
+      "dropout": 0.0,
+      "lr": 0.0001,
+      "weight_decay": 0.0,
+      "width": 192
+    }
+  },
+  "ofat_effects": [
+    {
+      "rung": "r0",
+      "param": "lr",
+      "value": 5e-05,
+      "incumbent": 0.0001,
+      "objective": 0.36420542506579,
+      "delta": -0.015133528287892384,
+      "trial": "trial_001_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "width",
+      "value": 96,
+      "incumbent": 128,
+      "objective": 0.3686636397445936,
+      "delta": -0.010675313609088799,
+      "trial": "trial_004_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "lr",
+      "value": 0.0002,
+      "incumbent": 0.0001,
+      "objective": 0.3851076513538929,
+      "delta": 0.005768698000210515,
+      "trial": "trial_002_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "dropout",
+      "value": 0.05,
+      "incumbent": 0.0,
+      "objective": 0.3740598394576138,
+      "delta": -0.00527911389606861,
+      "trial": "trial_008_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "lr",
+      "value": 0.0004,
+      "incumbent": 0.0001,
+      "objective": 0.3841733000311358,
+      "delta": 0.004834346677453416,
+      "trial": "trial_003_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "width",
+      "value": 192,
+      "incumbent": 128,
+      "objective": 0.3836031658318897,
+      "delta": 0.0042642124782072965,
+      "trial": "trial_005_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "weight_decay",
+      "value": 0.0001,
+      "incumbent": 0.0,
+      "objective": 0.3786430850942839,
+      "delta": -0.0006958682593984911,
+      "trial": "trial_006_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "weight_decay",
+      "value": 0.01,
+      "incumbent": 0.0,
+      "objective": 0.3794906415030075,
+      "delta": 0.000151688149325091,
+      "trial": "trial_007_r0"
+    }
+  ],
+  "transfer": [
+    {
+      "from": "r0",
+      "to": "r1",
+      "n": 3,
+      "spearman": -0.4999999999999999,
+      "note": "weak transfer: treat the screen's ordering as provisional and confirm more candidates"
+    }
+  ],
+  "gpu_h_measured": 3.39,
+  "gpu_h_planned": 2.62,
+  "gpu_h_if_full_fidelity": 265.2
+}

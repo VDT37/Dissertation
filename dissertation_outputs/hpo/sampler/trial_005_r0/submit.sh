@@ -1,0 +1,3 @@
+#!/bin/sh
+# emitted by hpo_search.py 2026-08-10T23:25:19
+sbatch --parsable --job-name=hpo-inference_grid-005r0 --time=02:56:54 --output=/home/users/dv321/dissertation_outputs/hpo/sampler/trial_005_r0/slurm-%j.out /home/users/dv321/dissertation/gpu.sbatch python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/evaluate_diffusion.py' --churn 0.0 --guidance 1.25 --members 8 --steps 25 --limit 3000 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/sampler/eval --tag _trial_005_r0 --ckpt /home/users/dv321/dissertation_outputs/diffusion_ml_v2/ckpt_ep050.pt --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --split val --lead 60 --batch 16

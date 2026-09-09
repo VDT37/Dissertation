@@ -1,0 +1,306 @@
+#!/usr/bin/env python3
+import os, glob, json, time, getpass, hashlib, argparse, resource
+import multiprocessing as mp
+from collections import deque
+from concurrent.futures import ProcessPoolExecutor
+
+import numpy as np
+import torch
+
+from train_vae import VAE, to_dbr
+
+USER    = getpass.getuser()
+SCRATCH = os.environ.get("DISS_SCRATCH", f"/work/scratch-nopw2/{USER}/dissertation")
+PRIOR   = os.path.join(SCRATCH, "prior")
+OUT     = os.path.join(SCRATCH, "latents")
+VAE_CKPT = os.path.expanduser("~/dissertation_outputs/vae_v2/vae_best.pt")
+
+DBR_THRESH = 0.1
+DBR_ZERO   = -15.0
+FIELDS     = ("x1", "x2", "x3", "x4", "A", "y")
+H = W = 256
+HL = WL = 64
+
+
+def sha256_file(path, chunk=1 << 20):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        while True:
+            b = fh.read(chunk)
+            if not b:
+                break
+            h.update(b)
+    return h.hexdigest()
+
+
+def atomic_json(obj, path, **kw):
+    tmp = path + ".tmp"
+    with open(tmp, "w") as fh:
+        json.dump(obj, fh, **kw)
+    os.replace(tmp, path)
+
+
+def load_crop_dbr(path):
+    z = np.load(path, allow_pickle=True)
+    out = np.empty((len(FIELDS), H, W), dtype="float32")
+    x = z["x_mmh"].astype("float32")
+    for j in range(4):
+        out[j] = to_dbr(x[j])
+    out[4] = to_dbr(z["A_mmh"].astype("float32"))
+    out[5] = to_dbr(z["y_mmh"].astype("float32"))
+    return out
+
+
+def rss_gb():
+    return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024.0 ** 2)
+
+
+def parse_lead(path):
+    base = os.path.basename(path)
+    if "_L" in base:
+        try:
+            return int(base.rsplit("_L", 1)[-1].split(".")[0])
+        except ValueError:
+            return None
+    return None
+
+
+def shard_names(out_dir, split, lead):
+    tag = "" if lead is None else f"_L{lead:02d}"
+    return (os.path.join(out_dir, f"{split}_latents{tag}.npy"),
+            os.path.join(out_dir, f"{split}_latents{tag}_meta.json"),
+            os.path.join(out_dir, f"{split}_latents{tag}_index.json"))
+
+
+def load_vae(ckpt_path, device):
+    ck = torch.load(ckpt_path, map_location=device)
+    for k in ("model", "config", "norm", "latent_scale"):
+        if k not in ck:
+            raise SystemExit(f"ERROR: {ckpt_path} has no '{k}' key; expected a "
+                             "vae_best.pt / vae_last.pt checkpoint from train_vae.py")
+    nrm = ck["norm"]
+    if abs(nrm["dbr_thresh"] - DBR_THRESH) > 1e-9 or abs(nrm["dbr_zero"] - DBR_ZERO) > 1e-9:
+        raise SystemExit("ERROR: dBR constants in the VAE checkpoint do not match "
+                         "this script; the data contract has diverged.")
+    model = VAE(w=ck["config"]["width"], zc=ck["config"]["zc"]).to(device)
+    model.load_state_dict(ck["model"])
+    model.eval()
+    return model, float(ck["latent_scale"]), float(nrm["mean"]), float(nrm["std"]), ck
+
+
+@torch.no_grad()
+def encode_batch(vae, batch_np, mean, std, latent_scale, device, zc):
+    B = batch_np.shape[0]
+    x = torch.from_numpy(batch_np).to(device)
+    x = (x - mean) / std
+    mu, _ = vae.encode(x.reshape(B * len(FIELDS), 1, H, W))
+    z = (latent_scale * mu).reshape(B, len(FIELDS) * zc, HL, WL)
+    return z.float().cpu().numpy()
+
+
+def spot_check(npy_path, files, vae, mean, std, latent_scale, device, zc, n=8, seed=0, atol=2e-2):
+    mm = np.load(npy_path, mmap_mode="r")
+    rng = np.random.default_rng(seed)
+    idx = rng.choice(len(files), size=min(n, len(files)), replace=False)
+    bad = 0
+    for i in idx:
+        fresh = encode_batch(vae, load_crop_dbr(files[i])[None], mean, std,
+                             latent_scale, device, zc)[0]
+        got = np.asarray(mm[i], dtype="float32")
+        if np.isnan(got).any() or np.max(np.abs(fresh - got)) > atol:
+            bad += 1
+            print(f"  MISMATCH row {i} ({files[i]}): "
+                  f"max|diff| {np.max(np.abs(fresh - got)):.4f}  nan {np.isnan(got).any()}")
+    print(f"  spot check: {len(idx) - bad}/{len(idx)} rows verified against source npz")
+    return bad == 0
+
+
+def pack_split(split, args, vae, latent_scale, mean, std, zc, vae_sha, vae_ck, device,
+               lead=None, files=None):
+    if files is None:
+        files = sorted(glob.glob(os.path.join(args.root, split, "*", "*.npz")))
+    if not files:
+        print(f"[{split}] no crops found under {os.path.join(args.root, split)}, skipping")
+        return
+    tag = split if lead is None else f"{split} +{lead}min"
+    nch = len(FIELDS) * zc
+    npy, meta_p, index_p = shard_names(args.out, split, lead)
+
+    if os.path.exists(npy) and os.path.exists(meta_p) and not args.force:
+        try:
+            meta = json.load(open(meta_p))
+        except (json.JSONDecodeError, ValueError):
+            print(f"[{tag}] {meta_p} is corrupt (interrupted pack?): repacking")
+            meta = {}
+        n_disk = np.load(npy, mmap_mode="r").shape[0]
+        if meta.get("n_files") == len(files) and n_disk == len(files) \
+                and meta.get("vae_sha256") == vae_sha:
+            print(f"[{tag}] already packed ({len(files)} rows, same VAE), "
+                  "skipping (use --force to redo)")
+            return
+        print(f"[{tag}] existing pack is stale (meta n {meta.get('n_files')}, "
+              f"disk {n_disk}, expected {len(files)}, "
+              f"vae match {meta.get('vae_sha256') == vae_sha}): repacking")
+
+    part = npy + ".part"
+    gb = len(files) * nch * HL * WL * 2 / 1e9
+    print(f"[{tag}] encoding {len(files)} crops -> ({len(files)}, {nch}, {HL}, {WL}) "
+          f"float16 ({gb:.1f} GB) on {device} ...", flush=True)
+    mm = np.lib.format.open_memmap(part, mode="w+", dtype="float16",
+                                   shape=(len(files), nch, HL, WL))
+    d_sum = d_sumsq = 0.0
+    d_cnt = 0
+    zy_sum = zy_sumsq = 0.0
+
+    ctx = mp.get_context("fork")
+    t0, done, buf, i0 = time.time(), 0, [], 0
+    since_sync = 0
+    inflight = max(1, args.prefetch) * args.batch
+    with ProcessPoolExecutor(max_workers=args.workers, mp_context=ctx) as ex:
+        def flush():
+            nonlocal buf, i0, d_sum, d_sumsq, d_cnt, zy_sum, zy_sumsq, since_sync
+            if not buf:
+                return
+            z = encode_batch(vae, np.stack(buf), mean, std, latent_scale, device, zc)
+            d = z[:, 5 * zc:6 * zc] - z[:, 4 * zc:5 * zc]
+            d_sum   += float(d.sum());  d_sumsq += float((d * d).sum())
+            d_cnt   += d.size
+            zy = z[:, 5 * zc:6 * zc]
+            zy_sum  += float(zy.sum()); zy_sumsq += float((zy * zy).sum())
+            mm[i0:i0 + len(buf)] = z.astype("float16")
+            i0 += len(buf)
+            since_sync += len(buf)
+            buf = []
+            if since_sync >= args.flush_rows:
+                mm.flush()
+                since_sync = 0
+
+        pending = deque()
+        it = iter(files)
+        for f in it:
+            pending.append(ex.submit(load_crop_dbr, f))
+            if len(pending) >= inflight:
+                break
+        while pending:
+            arr = pending.popleft().result()
+            nxt = next(it, None)
+            if nxt is not None:
+                pending.append(ex.submit(load_crop_dbr, nxt))
+            buf.append(arr)
+            if len(buf) == args.batch:
+                flush()
+            done += 1
+            if done % 2000 == 0:
+                print(f"  {done}/{len(files)} crops | "
+                      f"{done / (time.time() - t0):.0f} crops/s | "
+                      f"peak RSS {rss_gb():.1f} GiB", flush=True)
+        flush()
+    mm.flush()
+    del mm
+
+    d_mean = d_sum / d_cnt
+    sigma_data = float(np.sqrt(max(d_sumsq / d_cnt - d_mean ** 2, 0.0)))
+    zy_mean = zy_sum / d_cnt
+    zy_std = float(np.sqrt(max(zy_sumsq / d_cnt - zy_mean ** 2, 0.0)))
+    print(f"[{tag}] latent stats: sigma_data (std of z_y - z_A) = {sigma_data:.4f} "
+          f"| delta mean {d_mean:+.4f} | z_y std {zy_std:.3f} "
+          f"| peak RSS {rss_gb():.1f} GiB", flush=True)
+
+    if not spot_check(part, files, vae, mean, std, latent_scale, device, zc, n=args.spot):
+        print(f"[{tag}] VERIFICATION FAILED: leaving {part} for inspection, "
+              "pack NOT installed", flush=True)
+        return
+    os.replace(part, npy)
+    atomic_json(files, index_p)
+    atomic_json({"n_files": len(files), "n_channels": nch, "h": HL, "w": WL,
+                 "dtype": "float16",
+                 "channel_layout": "0:4 z_x1, 4:8 z_x2, 8:12 z_x3, 12:16 z_x4, "
+                                   "16:20 z_A, 20:24 z_y (zc=4 blocks, files sorted)",
+                 "fields": list(FIELDS), "zc": zc,
+                 "lead_min": lead,
+                 "latent_scale": latent_scale,
+                 "norm": {"mean": mean, "std": std,
+                          "dbr_thresh": DBR_THRESH, "dbr_zero": DBR_ZERO},
+                 "sigma_data": sigma_data,
+                 "delta_mean": d_mean, "zy_std": zy_std,
+                 "delta_moments": {"sum": d_sum, "sumsq": d_sumsq, "count": d_cnt},
+                 "vae_ckpt": os.path.abspath(args.vae),
+                 "vae_sha256": vae_sha,
+                 "vae_epoch": vae_ck.get("epoch"),
+                 "vae_config": vae_ck.get("config")},
+                meta_p, indent=2)
+    print(f"[{tag}] done -> {npy} (verified)", flush=True)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--vae", default=VAE_CKPT, help="frozen codec checkpoint")
+    ap.add_argument("--root", default=PRIOR, help="prior npz cache root")
+    ap.add_argument("--out", default=OUT)
+    ap.add_argument("--splits", default="train,val")
+    ap.add_argument("--batch", type=int, default=16, help="crops per encoder pass (x6 fields)")
+    ap.add_argument("--workers", type=int, default=4,
+                    help="loader processes; the GPU encode caps throughput at "
+                         "about 65 crops/s, so 2-4 is enough")
+    ap.add_argument("--prefetch", type=int, default=4,
+                    help="in-flight work, in units of --batch "
+                         "(4 x 16 crops ~= 96 MiB); this bounds loader memory")
+    ap.add_argument("--flush-rows", type=int, default=4096,
+                    help="msync the output mapping every N rows, so dirty pages stay "
+                         "bounded (0 = only at the end)")
+    ap.add_argument("--lead", type=int, default=None,
+                    help="pack only this lead (minutes) into "
+                         "{split}_latents_L<lead>.npy; omit to pack every lead found")
+    ap.add_argument("--spot", type=int, default=8, help="spot-check sample size")
+    ap.add_argument("--force", action="store_true", help="repack even if present")
+    ap.add_argument("--check-only", action="store_true", help="only run the spot checks")
+    args = ap.parse_args()
+    os.makedirs(args.out, exist_ok=True)
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    if device == "cpu":
+        print("WARNING: no GPU found; encoding on CPU will be very slow.", flush=True)
+    torch.backends.cudnn.benchmark = False
+
+    if not os.path.exists(args.vae):
+        raise SystemExit(f"ERROR: VAE checkpoint not found: {args.vae}")
+    vae, latent_scale, mean, std, vae_ck = load_vae(args.vae, device)
+    zc = vae_ck["config"]["zc"]
+    vae_sha = sha256_file(args.vae)
+    print(f"VAE: {args.vae} (epoch {vae_ck.get('epoch')}, sha {vae_sha[:12]}) | "
+          f"latent_scale {latent_scale:.3f} | norm mean {mean:.3f} std {std:.3f}", flush=True)
+
+    for split in args.splits.split(","):
+        split = split.strip()
+        all_files = sorted(glob.glob(os.path.join(args.root, split, "*", "*.npz")))
+        by_lead = {}
+        for f in all_files:
+            by_lead.setdefault(parse_lead(f), []).append(f)
+        if args.lead is not None:
+            if args.lead not in by_lead:
+                print(f"[{split}] no crops for lead +{args.lead}min under "
+                      f"{os.path.join(args.root, split)} "
+                      f"(found leads: {sorted(k for k in by_lead if k is not None)})")
+                continue
+            by_lead = {args.lead: by_lead[args.lead]}
+        elif len(by_lead) > 1:
+            print(f"[{split}] multi-lead cache: packing one shard per lead "
+                  f"{sorted(k for k in by_lead if k is not None)} sequentially. "
+                  "Use --lead <min> to run them as separate jobs.", flush=True)
+
+        for lead in sorted(by_lead, key=lambda k: (k is not None, k)):
+            files = by_lead[lead]
+            if args.check_only:
+                npy, _, idx_p = shard_names(args.out, split, lead)
+                if not (os.path.exists(idx_p) and os.path.exists(npy)):
+                    print(f"[{split} lead {lead}] no pack to check")
+                    continue
+                spot_check(npy, json.load(open(idx_p)), vae, mean, std,
+                           latent_scale, device, zc, n=10)
+            else:
+                pack_split(split, args, vae, latent_scale, mean, std, zc, vae_sha,
+                           vae_ck, device, lead=lead, files=files)
+
+
+if __name__ == "__main__":
+    main()

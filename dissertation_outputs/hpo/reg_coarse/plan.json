@@ -1,0 +1,205 @@
+{
+  "spec": {
+    "space": "regression_coarse",
+    "arm": "regression",
+    "sampler": "grid",
+    "objective": "val_ev",
+    "objective_expr": "val_ev",
+    "gate": "gate_c",
+    "gate_expr": "val_ev >= 0.10",
+    "rungs": [
+      {
+        "name": "r0",
+        "rows": 60000,
+        "epochs": 2,
+        "sample_crops": 96,
+        "psd_crops": 96
+      },
+      {
+        "name": "r1",
+        "rows": 200000,
+        "epochs": 3,
+        "sample_crops": 96,
+        "psd_crops": 96
+      }
+    ],
+    "eta": 3,
+    "seed": 0,
+    "sampler_seed": 0,
+    "n_trials": 24,
+    "psd_ceiling": 0.903,
+    "passthrough": [
+      "--latents-dir",
+      "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+      "--vae",
+      "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+      "--leads",
+      "15,30,45,60",
+      "--target",
+      "delta",
+      "--cond-mode",
+      "full"
+    ],
+    "executor": "slurm",
+    "parallel": 4,
+    "prune": "none",
+    "git": "ae67b1d",
+    "created": "2026-08-10T20:08:53",
+    "space_note": "Screen for the deterministic conditional-mean network that feeds the CorrDiff arm. No noise schedule here: this net is trained under a plain regression loss, so the searchable set is optimisation and capacity only.",
+    "reruns": 4,
+    "host": "sci-vm-01.jasmin.ac.uk"
+  },
+  "candidates": [
+    {
+      "params": {
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "incumbent",
+      "invalid": []
+    },
+    {
+      "params": {
+        "dropout": 0.0,
+        "lr": 5e-05,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:lr",
+      "invalid": []
+    },
+    {
+      "params": {
+        "dropout": 0.0,
+        "lr": 0.0002,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:lr",
+      "invalid": []
+    },
+    {
+      "params": {
+        "dropout": 0.0,
+        "lr": 0.0004,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:lr",
+      "invalid": []
+    },
+    {
+      "params": {
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "weight_decay": 0.0,
+        "width": 96
+      },
+      "origin": "ofat:width",
+      "invalid": []
+    },
+    {
+      "params": {
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "weight_decay": 0.0,
+        "width": 192
+      },
+      "origin": "ofat:width",
+      "invalid": []
+    },
+    {
+      "params": {
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "weight_decay": 0.0001,
+        "width": 128
+      },
+      "origin": "ofat:weight_decay",
+      "invalid": []
+    },
+    {
+      "params": {
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "weight_decay": 0.01,
+        "width": 128
+      },
+      "origin": "ofat:weight_decay",
+      "invalid": []
+    },
+    {
+      "params": {
+        "dropout": 0.05,
+        "lr": 0.0001,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:dropout",
+      "invalid": []
+    }
+  ],
+  "schedule": [
+    {
+      "rung": "r0",
+      "rows": 60000,
+      "epochs": 2,
+      "n_trials": 9,
+      "gpu_h": 1.04,
+      "gpu_h_per_trial": 0.115
+    },
+    {
+      "rung": "r1",
+      "rows": 200000,
+      "epochs": 3,
+      "n_trials": 3,
+      "gpu_h": 1.59,
+      "gpu_h_per_trial": 0.528
+    }
+  ],
+  "gpu_h_planned": 2.62,
+  "gpu_h_if_full_fidelity": 265.2,
+  "example_cmd": [
+    "python",
+    "/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py",
+    "--dropout",
+    "0.0",
+    "--lr",
+    "0.0001",
+    "--weight-decay",
+    "0.0",
+    "--width",
+    "128",
+    "--limit",
+    "60000",
+    "--epochs",
+    "2",
+    "--warmup",
+    "187",
+    "--psd-crops",
+    "96",
+    "--patience",
+    "0",
+    "--no-keep-sampled",
+    "--diag-every",
+    "2",
+    "--diag-crops",
+    "96",
+    "--seed",
+    "0",
+    "--out",
+    "/home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_000_r0",
+    "--latents-dir",
+    "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+    "--vae",
+    "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+    "--leads",
+    "15,30,45,60",
+    "--target",
+    "delta",
+    "--cond-mode",
+    "full"
+  ]
+}

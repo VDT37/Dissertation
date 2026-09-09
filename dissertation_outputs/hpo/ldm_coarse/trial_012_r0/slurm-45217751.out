@@ -1,0 +1,44 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-ed4895e1-5b96-c2d1-cf62-5d9e625aba0c)
+host gpuhost009.jc.rl.ac.uk | CUDA ok | Tue 11 Aug 10:35:18 BST 2026
+args: python /home/users/dv321/dissertation/Code/3 - Diffusion stage/train_ldm.py --attn 16 --batch 32 --cond-drop 0.1 --cond-mode full --dropout 0.0 --lr 5e-05 --mults 1,2,4 --p-mean -1.2 --p-std 1.2 --weight-decay 0.0 --width 128 --limit 60000 --epochs 3 --warmup 562 --psd-crops 96 --patience 0 --no-keep-sampled --sample-every 3 --sample-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/ldm_coarse/trial_012_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60
+pooled sigma_data 0.7407 from [+15min 0.5800, +30min 0.7073, +45min 0.7921, +60min 0.8546]
+diagnostics: 96 fixed val crops (rows 0..5999), 8 members, 25 steps
+device=cuda | denoiser 65.7M params | cond=full (20ch) | sigma_data=0.7407 | latent_scale=0.784
+train rows 60000 | val rows 6000 | 1875 steps/epoch (batch 32) | weighted loss starts near 1.0 by construction
+GPU: NVIDIA A100-SXM4-40GB | 42 GB total
+  ep1 step 200/1875 | loss_w 0.9553 raw 0.1378 | lr 1.77e-05 | gn 1.29 | 270 img/s
+  ep1 step 400/1875 | loss_w 0.9063 raw 0.1247 | lr 3.55e-05 | gn 1.27 | 281 img/s
+  ep1 step 600/1875 | loss_w 0.8210 raw 0.1112 | lr 5.00e-05 | gn 1.35 | 285 img/s
+  ep1 step 800/1875 | loss_w 0.7499 raw 0.1007 | lr 4.97e-05 | gn 1.33 | 287 img/s
+  ep1 step 1000/1875 | loss_w 0.6991 raw 0.0938 | lr 4.91e-05 | gn 1.29 | 288 img/s
+  ep1 step 1200/1875 | loss_w 0.6613 raw 0.0883 | lr 4.81e-05 | gn 1.25 | 289 img/s
+  ep1 step 1400/1875 | loss_w 0.6327 raw 0.0840 | lr 4.67e-05 | gn 1.21 | 289 img/s
+  ep1 step 1600/1875 | loss_w 0.6094 raw 0.0807 | lr 4.50e-05 | gn 1.17 | 290 img/s
+  ep1 step 1800/1875 | loss_w 0.5908 raw 0.0781 | lr 4.30e-05 | gn 1.14 | 290 img/s
+epoch   1/3 | train 0.5841 | val 0.5370 (raw 0.0672) | 207s | 290 img/s | GPU 7.8 GB
+  new best (val loss_w 0.5370) -> diff_best.pt
+  ep2 step 200/1875 | loss_w 0.4290 raw 0.0548 | lr 3.98e-05 | gn 0.89 | 289 img/s
+  ep2 step 400/1875 | loss_w 0.4279 raw 0.0548 | lr 3.72e-05 | gn 0.88 | 291 img/s
+  ep2 step 600/1875 | loss_w 0.4261 raw 0.0545 | lr 3.44e-05 | gn 0.84 | 292 img/s
+  ep2 step 800/1875 | loss_w 0.4254 raw 0.0544 | lr 3.14e-05 | gn 0.83 | 293 img/s
+  ep2 step 1000/1875 | loss_w 0.4241 raw 0.0541 | lr 2.84e-05 | gn 0.80 | 293 img/s
+  ep2 step 1200/1875 | loss_w 0.4228 raw 0.0538 | lr 2.53e-05 | gn 0.79 | 293 img/s
+  ep2 step 1400/1875 | loss_w 0.4216 raw 0.0537 | lr 2.22e-05 | gn 0.77 | 293 img/s
+  ep2 step 1600/1875 | loss_w 0.4201 raw 0.0535 | lr 1.92e-05 | gn 0.75 | 293 img/s
+  ep2 step 1800/1875 | loss_w 0.4191 raw 0.0534 | lr 1.62e-05 | gn 0.74 | 293 img/s
+epoch   2/3 | train 0.4188 | val 0.4142 (raw 0.0522) | 205s | 293 img/s | GPU 7.8 GB
+  new best (val loss_w 0.4142) -> diff_best.pt
+  ep3 step 200/1875 | loss_w 0.4082 raw 0.0513 | lr 1.23e-05 | gn 0.57 | 292 img/s
+  ep3 step 400/1875 | loss_w 0.4101 raw 0.0516 | lr 9.77e-06 | gn 0.55 | 292 img/s
+  ep3 step 600/1875 | loss_w 0.4097 raw 0.0519 | lr 7.44e-06 | gn 0.55 | 293 img/s
+  ep3 step 800/1875 | loss_w 0.4099 raw 0.0521 | lr 5.37e-06 | gn 0.53 | 293 img/s
+  ep3 step 1000/1875 | loss_w 0.4091 raw 0.0522 | lr 3.60e-06 | gn 0.51 | 293 img/s
+  ep3 step 1200/1875 | loss_w 0.4086 raw 0.0519 | lr 2.17e-06 | gn 0.49 | 293 img/s
+  ep3 step 1400/1875 | loss_w 0.4080 raw 0.0519 | lr 1.08e-06 | gn 0.47 | 293 img/s
+  ep3 step 1600/1875 | loss_w 0.4076 raw 0.0520 | lr 3.66e-07 | gn 0.45 | 293 img/s
+  ep3 step 1800/1875 | loss_w 0.4076 raw 0.0521 | lr 2.78e-08 | gn 0.43 | 293 img/s
+epoch   3/3 | train 0.4077 | val 0.4008 (raw 0.0507) | 205s | 293 img/s | GPU 18.1 GB
+  sampled: MAE 0.274 (adv 0.280) | CSI@1 0.442 (adv 0.428) | CSI@8 0.040 (adv 0.057) | CRPS 0.191 (adv 0.280) | PSD 2-8km 0.57
+  new best (val loss_w 0.4008) -> diff_best.pt
+
+completed: total 11.7 min | best val loss_w 0.4008 (ep3) | DONE written -> the sbatch chain will stop

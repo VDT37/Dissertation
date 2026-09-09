@@ -1,0 +1,50 @@
+{
+  "space": "regression_coarse",
+  "arm": "regression",
+  "sampler": "grid",
+  "objective": "val_ev",
+  "objective_expr": "val_ev",
+  "gate": "gate_c",
+  "gate_expr": "val_ev >= 0.10",
+  "rungs": [
+    {
+      "name": "r0",
+      "rows": 60000,
+      "epochs": 2,
+      "sample_crops": 96,
+      "psd_crops": 96
+    },
+    {
+      "name": "r1",
+      "rows": 200000,
+      "epochs": 3,
+      "sample_crops": 96,
+      "psd_crops": 96
+    }
+  ],
+  "eta": 3,
+  "seed": 0,
+  "sampler_seed": 0,
+  "n_trials": 24,
+  "psd_ceiling": 0.903,
+  "passthrough": [
+    "--latents-dir",
+    "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+    "--vae",
+    "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+    "--leads",
+    "15,30,45,60",
+    "--target",
+    "delta",
+    "--cond-mode",
+    "full"
+  ],
+  "executor": "slurm",
+  "parallel": 4,
+  "prune": "none",
+  "git": "ae67b1d",
+  "created": "2026-08-10T20:08:53",
+  "space_note": "Screen for the deterministic conditional-mean network that feeds the CorrDiff arm. No noise schedule here: this net is trained under a plain regression loss, so the searchable set is optimisation and capacity only.",
+  "reruns": 4,
+  "host": "sci-vm-01.jasmin.ac.uk"
+}

@@ -1,0 +1,23 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-d03109d8-21ac-0ab6-edbb-3953b3086d60)
+host gpuhost010.jc.rl.ac.uk | CUDA ok | Sun  9 Aug 23:57:25 BST 2026
+args: python Code/3 - Diffusion stage/pack_mu.py --reg /home/users/dv321/dissertation_outputs/regression_delta_ep17/reg_best.pt --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --out /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta --splits val --leads 15,30,45,60 --batch 256
+regression: /home/users/dv321/dissertation_outputs/regression_delta_ep17/reg_best.pt
+  epoch 2 | val_mse 0.30206 | 65.7M params | target=delta cond=full (20ch) | leads [15, 30, 45, 60]
+frozen regression sha b6867040dd4e | target=delta cond=full | out -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta
+[val_L15] 13281 rows -> (13281, 4, 64, 64) float16 (0.44 GB) on cuda ...
+[val_L15] sigma_data_resid 0.4402 (target sd 0.5780) | EV 0.4253 (variance-normalised 0.4201) | resid mean +0.00083 | 20s
+  spot check: 8/8 rows verified (worst |diff| 0.02365, tol 0.06)
+[val_L15] done -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta/val_mu_L15.npy (verified)
+[val_L30] 13281 rows -> (13281, 4, 64, 64) float16 (0.44 GB) on cuda ...
+[val_L30] sigma_data_resid 0.5272 (target sd 0.7107) | EV 0.4533 (variance-normalised 0.4498) | resid mean +0.00082 | 18s
+  spot check: 8/8 rows verified (worst |diff| 0.02460, tol 0.06)
+[val_L30] done -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta/val_mu_L30.npy (verified)
+[val_L45] 13281 rows -> (13281, 4, 64, 64) float16 (0.44 GB) on cuda ...
+[val_L45] sigma_data_resid 0.5854 (target sd 0.7996) | EV 0.4669 (variance-normalised 0.4640) | resid mean +0.00111 | 18s
+  spot check: 8/8 rows verified (worst |diff| 0.02531, tol 0.06)
+[val_L45] done -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta/val_mu_L45.npy (verified)
+[val_L60] 13281 rows -> (13281, 4, 64, 64) float16 (0.44 GB) on cuda ...
+[val_L60] sigma_data_resid 0.6276 (target sd 0.8656) | EV 0.4771 (variance-normalised 0.4743) | resid mean +0.00130 | 18s
+  spot check: 8/8 rows verified (worst |diff| 0.03434, tol 0.06)
+[val_L60] done -> /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17_mu_delta/val_mu_L60.npy (verified)
+per shard: val_L15 EV 0.4253 sd' 0.4402, val_L30 EV 0.4533 sd' 0.5272, val_L45 EV 0.4669 sd' 0.5854, val_L60 EV 0.4771 sd' 0.6276

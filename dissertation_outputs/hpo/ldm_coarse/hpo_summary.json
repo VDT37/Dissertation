@@ -1,0 +1,210 @@
+{
+  "study": "/home/users/dv321/dissertation_outputs/hpo/ldm_coarse",
+  "spec": {
+    "space": "ldm_coarse",
+    "arm": "ldm",
+    "sampler": "grid",
+    "objective": "composite",
+    "objective_expr": "(1.0 - crps / crps_adv) - 0.25 * abs(psd_ratio_2_8km - psd_ceiling)",
+    "gate": "mae_vs_adv",
+    "gate_expr": "mae <= 1.01 * mae_adv",
+    "rungs": [
+      {
+        "name": "r0",
+        "rows": 60000,
+        "epochs": 3,
+        "sample_crops": 96,
+        "psd_crops": 96
+      },
+      {
+        "name": "r1",
+        "rows": 150000,
+        "epochs": 4,
+        "sample_crops": 96,
+        "psd_crops": 96
+      },
+      {
+        "name": "r2",
+        "rows": 613892,
+        "epochs": 6,
+        "sample_crops": 128,
+        "psd_crops": 128
+      }
+    ],
+    "eta": 3,
+    "seed": 0,
+    "sampler_seed": 0,
+    "n_trials": 24,
+    "psd_ceiling": 0.903,
+    "passthrough": [
+      "--latents-dir",
+      "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+      "--vae",
+      "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+      "--leads",
+      "15,30,45,60"
+    ],
+    "executor": "slurm",
+    "parallel": 2,
+    "prune": "none",
+    "git": "6f64654",
+    "created": "2026-08-10T19:58:53",
+    "space_note": "Stage 1 coarse screen, one factor at a time around the ml_v2 incumbent, plus two small cartesian blocks where an interaction is expected on physical grounds.",
+    "reruns": 3,
+    "host": "sci-vm-01.jasmin.ac.uk"
+  },
+  "n_trials": 35,
+  "n_gate_pass": 34,
+  "best": {
+    "trial": "trial_015_r2",
+    "rung": "r2",
+    "origin": "block:lr_x_batch",
+    "changed": "batch=32",
+    "objective": 0.3429992151291398,
+    "gate": true,
+    "mae": 0.23989292751502944,
+    "mae_over_adv": 0.898647395108989,
+    "mae_over_pers": 0.6980261234751458,
+    "crps": 0.16592042362026405,
+    "crps_ss_adv": 0.37845622200600804,
+    "crps_ss_pers": 0.5172146536177022,
+    "csi_1": 0.4482592491937185,
+    "csi_8": 0.07225687000584681,
+    "psd": 1.044828027507473,
+    "val_loss": 0.34307954377398875,
+    "gpu_h": null,
+    "params": {
+      "attn": "16",
+      "batch": 32,
+      "cond_drop": 0.1,
+      "cond_mode": "full",
+      "dropout": 0.0,
+      "lr": 0.0001,
+      "mults": "1,2,4",
+      "p_mean": -1.2,
+      "p_std": 1.2,
+      "weight_decay": 0.0,
+      "width": 128
+    }
+  },
+  "ofat_effects": [
+    {
+      "rung": "r0",
+      "param": "dropout",
+      "value": 0.1,
+      "incumbent": 0.0,
+      "objective": 0.19966482798033214,
+      "delta": -0.03165011369410123,
+      "trial": "trial_006_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "attn",
+      "value": "16,32",
+      "incumbent": "16",
+      "objective": 0.20110685386142294,
+      "delta": -0.03020808781301043,
+      "trial": "trial_004_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "width",
+      "value": 192,
+      "incumbent": 128,
+      "objective": 0.260047127172888,
+      "delta": 0.02873218549845466,
+      "trial": "trial_002_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "dropout",
+      "value": 0.05,
+      "incumbent": 0.0,
+      "objective": 0.20408651246854764,
+      "delta": -0.027228429205885724,
+      "trial": "trial_005_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "p_mean",
+      "value": -1.6,
+      "incumbent": -1.2,
+      "objective": 0.21719895895210492,
+      "delta": -0.014115982722328446,
+      "trial": "trial_009_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "width",
+      "value": 96,
+      "incumbent": 128,
+      "objective": 0.2197289647378729,
+      "delta": -0.011585976936560466,
+      "trial": "trial_001_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "weight_decay",
+      "value": 0.0001,
+      "incumbent": 0.0,
+      "objective": 0.22511766718462434,
+      "delta": -0.006197274489809029,
+      "trial": "trial_007_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "p_std",
+      "value": 1.6,
+      "incumbent": 1.2,
+      "objective": 0.2263971189769034,
+      "delta": -0.004917822697529967,
+      "trial": "trial_011_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "mults",
+      "value": "1,2,2,4",
+      "incumbent": "1,2,4",
+      "objective": 0.22755359492382118,
+      "delta": -0.0037613467506121823,
+      "trial": "trial_003_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "p_mean",
+      "value": -0.81,
+      "incumbent": -1.2,
+      "objective": 0.2330751627173237,
+      "delta": 0.0017602210428903364,
+      "trial": "trial_010_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "weight_decay",
+      "value": 0.01,
+      "incumbent": 0.0,
+      "objective": 0.23189717716075542,
+      "delta": 0.0005822354863220525,
+      "trial": "trial_008_r0"
+    }
+  ],
+  "transfer": [
+    {
+      "from": "r0",
+      "to": "r1",
+      "n": 8,
+      "spearman": 0.38095238095238093,
+      "note": "weak transfer: treat the screen's ordering as provisional and confirm more candidates"
+    },
+    {
+      "from": "r1",
+      "to": "r2",
+      "n": 2,
+      "spearman": null,
+      "note": "too few trials promoted to estimate a rank correlation"
+    }
+  ],
+  "gpu_h_measured": 0,
+  "gpu_h_planned": 15.63,
+  "gpu_h_if_full_fidelity": 701.6
+}

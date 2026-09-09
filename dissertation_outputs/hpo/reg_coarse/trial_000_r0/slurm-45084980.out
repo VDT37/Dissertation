@@ -1,0 +1,10 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-ca429164-0286-56aa-360e-edb5e4bfabb1)
+host gpuhost016.jc.rl.ac.uk | CUDA ok | Mon 10 Aug 20:21:38 BST 2026
+args: python /home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py --dropout 0.0 --lr 0.0001 --weight-decay 0.0 --width 128 --limit 60000 --epochs 2 --warmup 187 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 2 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60 --target delta --cond-mode full
+target=delta | pooled std 0.7407 | mean +0.0619 | E[target^2] train 0.5525 val 0.5604
+  per shard: [+15min sd 0.5800 E[t^2] 0.3395, +30min sd 0.7073 E[t^2] 0.5038, +45min sd 0.7921 E[t^2] 0.6314, +60min sd 0.8546 E[t^2] 0.7352]
+diagnostics: 96 fixed val crops (rows 0..5999)
+device=cuda | R_phi 65.7M params | cond=full (20ch) -> 4ch | latent_scale=0.784
+train rows 60000 | val rows 6000 | 937 steps/epoch (batch 64)
+data-path check: batch E[target^2] 0.3890 vs pack meta 0.5604 (ratio 0.694) | untrained MSE 0.3890 -> EV +0.0000 (must be ~0.000 on a fresh start)
+[2026-08-10T20:22:26.067] error: *** JOB 45084980 ON gpuhost016 CANCELLED AT 2026-08-10T20:22:26 DUE to SIGNAL Terminated ***

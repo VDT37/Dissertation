@@ -1,0 +1,7 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-f4276ebd-9b6a-226d-56c5-10bd282d5e4e)
+host gpuhost016.jc.rl.ac.uk | CUDA ok | Mon 10 Aug 20:11:17 BST 2026
+args: /usr/bin/python /home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py --dropout 0.0 --lr 0.0004 --weight-decay 0.0 --width 128 --limit 60000 --epochs 2 --warmup 187 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 2 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_003_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60 --target delta --cond-mode full
+Traceback (most recent call last):
+  File "/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py", line 69, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'

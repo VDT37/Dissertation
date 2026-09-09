@@ -1,0 +1,91 @@
+GPU Specs: 
+
+Dell R6615: AMD EPYC 9534 (64 cores), 384 GB RAM, plus your NVIDIA L4 (24 GB) GPU
+
+/scratch is 13TB, fast, but per-server and can be wiped → put the big data cache here.
+/home — only 30 GB, slow → keep just code + small outputs here.
+
+SSH only
+
+Accessible via Conda via Miniforge.
+
+----------------------
+big data cache -> uni storage (persistent disk setup)
+small outputs -> local onedrive
+
+-----------------
+Advection would be parallel across all 64 cores.
+
+At the end it prints the advection-only baseline (CSI + MAE) and saves a manifest.json to your home dir. That baseline is the number the diffusion model must beat.
+
+----------------
+COMMANDS FOR THE SSH NAVIGATION:
+
+Connect to Uni Server: ssh dv321@mcrugcomp02.ex.ac.uk
+
+OUTPUTS ARE STORED IN:
+cd /scratch/dv321/dissertation/
+
+To copy a file:
+scp build_advection_prior.py dv321@mcrugcomp02.ex.ac.uk:~/
+
+To copy the file from the server:
+scp dv321@mcrugcomp02.ex.ac.uk:~/dissertation_outputs/vae/train_log.json .
+
+To copy the folder from the server:
+scp -r dv321@mcrugcomp02.ex.ac.uk:~/dissertation_outputs/vae_v2 .
+
+Launch the advection in tmux to avoid dysconnectivity issues: 
+tmux new -s prior (new session)
+tmux attach -t prior (existing session)
+
+Detach the TMUX session:
+Ctrl+b, then d (Don't exit)
+
+Build the advection prior for the dataset: python build_advection_prior.py --start 2024-11-21 --end 2025-04-30
+
+ALWAYS RUN IN TMUX SESSIONS
+Add "2>&1 | tee run.log" at the end so that you can monitor the output and copy it. For monitoring: "cat run.log".
+OR
+"2>&1 | tee diffusion.log" and monitor with "tmux attach -t diffusion" -> "tail -f diffusion.log"
+
+Scratch Directory: cd /scratch/dv321/dissertation/
+Prior Outputs: cd prior/
+		cd train/2024-11-21/
+
+Go back one level: cd .. or ``
+Go to home directory: cd ~
+
+List files: ls
+Detailed list: ls -lh
+Newest files first: ls -lt
+
+Count files in a directory: ls | wc -l
+Count files recursively (all subfolders): find . -type f | wc -l
+Count .npz prior files: ls *.npz | wc -l
+Count .npz files recursively: find . -name "*.npz" | wc -l
+
+
+Check latest output (Progress tracking):
+ls -lt /scratch/dv321/dissertation/prior | head
+
+Check prior files created:
+find /scratch/dv321/dissertation/prior -name "*.npz" | wc -l
+
+Watch the live progress counter: 
+watch -n 5 'find /scratch/dv321/dissertation/prior -name "*.npz" | wc -l'
+(This updates every 5 seconds)
+
+Check frames created:
+find /scratch/dv321/dissertatio
+n/frames -name "*h5" | wc -l
+
+check storage:
+du -sh
+
+Check Memory:
+nvidia-smi
+watch -n 2 nvidia-smi   # live, refreshes every 2s (Ctrl-C to quit)
+------
+Output: 
+cat ~/dissertation_outputs/manifest.json

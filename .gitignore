@@ -1,0 +1,107 @@
+# ---------------------------------------------------------------
+# Dissertation: physics-informed diffusion nowcasting
+# Keep: code, configs, logs, metrics, figures, notes.
+# Drop: model weights and raw array data (regenerable, ~11 GB).
+# ---------------------------------------------------------------
+
+# Model checkpoints and weights (dissertation_outputs/**/*.pt ~ 11 GB)
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+
+# Raw / intermediate array data (packed fields, latents, sample ensembles)
+*.npz
+*.npy
+*.nc
+*.nc4
+*.h5
+*.hdf5
+*.zarr/
+*.grib
+*.grib2
+*.pkl
+*.pickle
+
+# Data and cache directories
+data/
+raw/
+cache/
+.cache/
+*_cache/
+
+# Redundant archive of Code/
+Code.zip
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Experiment tracking
+wandb/
+mlruns/
+runs/
+lightning_logs/
+tensorboard/
+events.out.tfevents.*
+optuna*.db
+*.sqlite
+*.sqlite3
+
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.crt
+credentials*
+secrets*
+.netrc
+
+# SLURM / HPC scratch (job logs under dissertation_outputs are kept on purpose)
+core.*
+*.core
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.spyproject/
+.ropeproject/
+
+# OS / OneDrive
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*.lnk
+~$*.docx
+~$*.xlsx
+~$*.pptx

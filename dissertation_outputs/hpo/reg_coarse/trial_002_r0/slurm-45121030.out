@@ -1,0 +1,17 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-bf0e754e-6fb3-7c5c-2d42-76e3ecfa52ec)
+host gpuhost012.jc.rl.ac.uk | CUDA ok | Mon 10 Aug 23:08:33 BST 2026
+args: python /home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py --dropout 0.0 --lr 0.0002 --weight-decay 0.0 --width 128 --limit 60000 --epochs 2 --warmup 187 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 2 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_002_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae --leads 15,30,45,60 --target delta --cond-mode full
+usage: train_regression.py [-h] [--epochs EPOCHS] [--batch BATCH] [--lr LR]
+                           [--warmup WARMUP] [--lr-schedule {cosine,constant}]
+                           [--weight-decay WEIGHT_DECAY] [--width WIDTH]
+                           [--mults MULTS] [--attn ATTN] [--dropout DROPOUT]
+                           [--ema-decay EMA_DECAY] [--target {delta,z_y}]
+                           [--cond-mode {full,x-only,a-only}]
+                           [--diag-every DIAG_EVERY] [--diag-crops DIAG_CROPS]
+                           [--psd-crops PSD_CROPS] [--diag-batch DIAG_BATCH]
+                           [--no-keep-sampled] [--patience PATIENCE]
+                           [--limit LIMIT] [--workers WORKERS] [--seed SEED]
+                           [--leads LEADS] [--latents-dir LATENTS_DIR]
+                           [--vae VAE] [--out OUT] [--resume RESUME]
+                           [--ignore-done] [--ridge-gate RIDGE_GATE]
+train_regression.py: error: argument --vae: expected one argument

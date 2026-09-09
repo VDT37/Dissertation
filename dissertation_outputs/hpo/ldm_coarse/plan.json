@@ -1,0 +1,561 @@
+{
+  "spec": {
+    "space": "ldm_coarse",
+    "arm": "ldm",
+    "sampler": "grid",
+    "objective": "composite",
+    "objective_expr": "(1.0 - crps / crps_adv) - 0.25 * abs(psd_ratio_2_8km - psd_ceiling)",
+    "gate": "mae_vs_adv",
+    "gate_expr": "mae <= 1.01 * mae_adv",
+    "rungs": [
+      {
+        "name": "r0",
+        "rows": 60000,
+        "epochs": 3,
+        "sample_crops": 96,
+        "psd_crops": 96
+      },
+      {
+        "name": "r1",
+        "rows": 150000,
+        "epochs": 4,
+        "sample_crops": 96,
+        "psd_crops": 96
+      },
+      {
+        "name": "r2",
+        "rows": 613892,
+        "epochs": 6,
+        "sample_crops": 128,
+        "psd_crops": 128
+      }
+    ],
+    "eta": 3,
+    "seed": 0,
+    "sampler_seed": 0,
+    "n_trials": 24,
+    "psd_ceiling": 0.903,
+    "passthrough": [
+      "--latents-dir",
+      "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+      "--vae",
+      "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+      "--leads",
+      "15,30,45,60"
+    ],
+    "executor": "slurm",
+    "parallel": 2,
+    "prune": "none",
+    "git": "ae67b1d",
+    "created": "2026-08-10T19:58:53",
+    "space_note": "Stage 1 coarse screen, one factor at a time around the ml_v2 incumbent, plus two small cartesian blocks where an interaction is expected on physical grounds.",
+    "reruns": 2,
+    "host": "sci-vm-01.jasmin.ac.uk"
+  },
+  "candidates": [
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "incumbent",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 96
+      },
+      "origin": "ofat:width",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 192
+      },
+      "origin": "ofat:width",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:mults",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16,32",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:attn",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.05,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:dropout",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.1,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:dropout",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0001,
+        "width": 128
+      },
+      "origin": "ofat:weight_decay",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.01,
+        "width": 128
+      },
+      "origin": "ofat:weight_decay",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.6,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:p_mean",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -0.81,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:p_mean",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.6,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "ofat:p_std",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 32,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 5e-05,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:lr_x_batch",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 5e-05,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:lr_x_batch",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 128,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 5e-05,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:lr_x_batch",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 32,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:lr_x_batch",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 128,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:lr_x_batch",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 32,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0002,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:lr_x_batch",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0002,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:lr_x_batch",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 128,
+        "cond_drop": 0.1,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0002,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:lr_x_batch",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.0,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:conditioning",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.2,
+        "cond_mode": "full",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:conditioning",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.0,
+        "cond_mode": "a-only",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:conditioning",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.1,
+        "cond_mode": "a-only",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:conditioning",
+      "invalid": []
+    },
+    {
+      "params": {
+        "attn": "16",
+        "batch": 64,
+        "cond_drop": 0.2,
+        "cond_mode": "a-only",
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "mults": "1,2,4",
+        "p_mean": -1.2,
+        "p_std": 1.2,
+        "weight_decay": 0.0,
+        "width": 128
+      },
+      "origin": "block:conditioning",
+      "invalid": []
+    }
+  ],
+  "schedule": [
+    {
+      "rung": "r0",
+      "rows": 60000,
+      "epochs": 3,
+      "n_trials": 25,
+      "gpu_h": 4.95,
+      "gpu_h_per_trial": 0.198
+    },
+    {
+      "rung": "r1",
+      "rows": 150000,
+      "epochs": 4,
+      "n_trials": 8,
+      "gpu_h": 4.93,
+      "gpu_h_per_trial": 0.616
+    },
+    {
+      "rung": "r2",
+      "rows": 613892,
+      "epochs": 6,
+      "n_trials": 2,
+      "gpu_h": 5.75,
+      "gpu_h_per_trial": 2.877
+    }
+  ],
+  "gpu_h_planned": 15.63,
+  "gpu_h_if_full_fidelity": 701.6,
+  "example_cmd": [
+    "python",
+    "/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_ldm.py",
+    "--attn",
+    "16",
+    "--batch",
+    "64",
+    "--cond-drop",
+    "0.1",
+    "--cond-mode",
+    "full",
+    "--dropout",
+    "0.0",
+    "--lr",
+    "0.0001",
+    "--mults",
+    "1,2,4",
+    "--p-mean",
+    "-1.2",
+    "--p-std",
+    "1.2",
+    "--weight-decay",
+    "0.0",
+    "--width",
+    "128",
+    "--limit",
+    "60000",
+    "--epochs",
+    "3",
+    "--warmup",
+    "281",
+    "--psd-crops",
+    "96",
+    "--patience",
+    "0",
+    "--no-keep-sampled",
+    "--sample-every",
+    "3",
+    "--sample-crops",
+    "96",
+    "--seed",
+    "0",
+    "--out",
+    "/home/users/dv321/dissertation_outputs/hpo/ldm_coarse/trial_000_r0",
+    "--latents-dir",
+    "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+    "--vae",
+    "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+    "--leads",
+    "15,30,45,60"
+  ]
+}

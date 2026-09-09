@@ -1,0 +1,73 @@
+{
+  "frame": "202606252230",
+  "split": "test",
+  "lead": 60,
+  "n_tiles": 8,
+  "tiles": [
+    "r0512_c0256",
+    "r0512_c0512",
+    "r0768_c0256",
+    "r1024_c0256",
+    "r1280_c0256",
+    "r1280_c0512",
+    "r1280_c0768",
+    "r1536_c0512"
+  ],
+  "grid": {
+    "H": 2175,
+    "W": 1725
+  },
+  "arms": [
+    {
+      "label": "ml_v2",
+      "ckpt": "/home/users/dv321/dissertation_outputs/diffusion_ml_v2/ckpt_ep025.pt",
+      "epoch": 25,
+      "hr_mean_cond": false,
+      "ens_mean": {
+        "mae": 0.970784068107605,
+        "wet_area": 0.3149495564732788
+      },
+      "member_0": {
+        "mae": 1.0716955661773682,
+        "wet_area": 0.18626570480304622
+      },
+      "member_1": {
+        "mae": 1.1044267416000366,
+        "wet_area": 0.18259179441619935
+      }
+    },
+    {
+      "label": "CorrDiff",
+      "ckpt": "/home/users/dv321/dissertation_outputs/diffusion_corrdiff_v1/ckpt_ep025.pt",
+      "epoch": 25,
+      "hr_mean_cond": true,
+      "ens_mean": {
+        "mae": 0.9434047341346741,
+        "wet_area": 0.32653769831648005
+      },
+      "member_0": {
+        "mae": 1.0602238178253174,
+        "wet_area": 0.20013888700300858
+      },
+      "member_1": {
+        "mae": 1.0641971826553345,
+        "wet_area": 0.1955882039156048
+      }
+    }
+  ],
+  "baselines": {
+    "advection": {
+      "mae": 1.170472264289856,
+      "wet_area": 0.17399476652047322
+    },
+    "persistence": {
+      "mae": 1.4955519437789917,
+      "wet_area": 0.22030077959059371
+    },
+    "observation_wet_area": 0.20366731519396655,
+    "regression_mean": {
+      "mae": 0.7724332809448242,
+      "wet_area": 0.18169562408952392
+    }
+  }
+}

@@ -1,0 +1,254 @@
+
+=== study regression_coarse :: arm regression :: sampler grid :: git aeda1f4 ===
+objective (maximised): val_ev = val_ev
+        admissibility: gate_c = val_ev >= 0.10
+           rung ladder: r0(60000x2), r1(200000x3)
+
+9 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:lr                lr=5e-05
+    2 ofat:lr                lr=0.0002
+    3 ofat:lr                lr=0.0004
+    4 ofat:width             width=96
+    5 ofat:width             width=192
+    6 ofat:weight_decay      weight_decay=0.0001
+    7 ofat:weight_decay      weight_decay=0.01
+    8 ofat:dropout           dropout=0.05
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       2       9        0.115     1.04
+  r1       200000       3       3        0.528     1.59
+  TOTAL                                            2.62
+
+  the same 9 configurations trained to 50 epochs at full fidelity: 265 A100-hours
+  multi-fidelity screening cost: 2.6 A100-hours (1.0 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  /usr/bin/python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py' --dropout 0.0 --lr 0.0001 --weight-decay 0.0 --width 128 --limit 60000 --epochs 2 --warmup 187 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 2 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60 --target delta --cond-mode full
+
+
+---- rung r0 (60000 rows x 2 epochs) :: 9 trials ----
+  submitted trial_000_r0 as job 45059366
+  submitted trial_001_r0 as job 45059367
+  trial_000_r0             INCOMPLETE objective        n/a gate FAIL 2.0 min
+  trial_001_r0             INCOMPLETE objective        n/a gate FAIL 2.0 min
+  submitted trial_002_r0 as job 45059385
+  submitted trial_003_r0 as job 45059386
+
+=== study regression_coarse :: arm regression :: sampler grid :: git aeda1f4 ===
+objective (maximised): val_ev = val_ev
+        admissibility: gate_c = val_ev >= 0.10
+           rung ladder: r0(60000x2), r1(200000x3)
+
+9 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:lr                lr=5e-05
+    2 ofat:lr                lr=0.0002
+    3 ofat:lr                lr=0.0004
+    4 ofat:width             width=96
+    5 ofat:width             width=192
+    6 ofat:weight_decay      weight_decay=0.0001
+    7 ofat:weight_decay      weight_decay=0.01
+    8 ofat:dropout           dropout=0.05
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       2       9        0.115     1.04
+  r1       200000       3       3        0.528     1.59
+  TOTAL                                            2.62
+
+  the same 9 configurations trained to 50 epochs at full fidelity: 265 A100-hours
+  multi-fidelity screening cost: 2.6 A100-hours (1.0 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py' --dropout 0.0 --lr 0.0001 --weight-decay 0.0 --width 128 --limit 60000 --epochs 2 --warmup 187 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 2 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60 --target delta --cond-mode full
+
+
+---- rung r0 (60000 rows x 2 epochs) :: 9 trials ----
+  submitted trial_000_r0 as job 45084980
+  submitted trial_001_r0 as job 45084981
+
+=== study regression_coarse :: arm regression :: sampler grid :: git 9787217 ===
+objective (maximised): val_ev = val_ev
+        admissibility: gate_c = val_ev >= 0.10
+           rung ladder: r0(60000x2), r1(200000x3)
+
+9 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:lr                lr=5e-05
+    2 ofat:lr                lr=0.0002
+    3 ofat:lr                lr=0.0004
+    4 ofat:width             width=96
+    5 ofat:width             width=192
+    6 ofat:weight_decay      weight_decay=0.0001
+    7 ofat:weight_decay      weight_decay=0.01
+    8 ofat:dropout           dropout=0.05
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       2       9        0.115     1.04
+  r1       200000       3       3        0.528     1.59
+  TOTAL                                            2.62
+
+  the same 9 configurations trained to 50 epochs at full fidelity: 265 A100-hours
+  multi-fidelity screening cost: 2.6 A100-hours (1.0 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py' --dropout 0.0 --lr 0.0001 --weight-decay 0.0 --width 128 --limit 60000 --epochs 2 --warmup 187 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 2 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60 --target delta --cond-mode full
+
+
+---- rung r0 (60000 rows x 2 epochs) :: 9 trials ----
+  submitted trial_000_r0 as job 45085662
+  submitted trial_001_r0 as job 45085663
+
+=== study regression_coarse :: arm regression :: sampler grid :: git 9787217 ===
+objective (maximised): val_ev = val_ev
+        admissibility: gate_c = val_ev >= 0.10
+           rung ladder: r0(60000x2), r1(200000x3)
+
+9 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:lr                lr=5e-05
+    2 ofat:lr                lr=0.0002
+    3 ofat:lr                lr=0.0004
+    4 ofat:width             width=96
+    5 ofat:width             width=192
+    6 ofat:weight_decay      weight_decay=0.0001
+    7 ofat:weight_decay      weight_decay=0.01
+    8 ofat:dropout           dropout=0.05
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       2       9        0.115     1.04
+  r1       200000       3       3        0.528     1.59
+  TOTAL                                            2.62
+
+  the same 9 configurations trained to 50 epochs at full fidelity: 265 A100-hours
+  multi-fidelity screening cost: 2.6 A100-hours (1.0 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py' --dropout 0.0 --lr 0.0001 --weight-decay 0.0 --width 128 --limit 60000 --epochs 2 --warmup 187 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 2 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae --leads 15,30,45,60 --target delta --cond-mode full
+
+
+---- rung r0 (60000 rows x 2 epochs) :: 9 trials ----
+  resume: trial_000_r0 already has its completion marker, skipping
+  resume: trial_001_r0 already has its completion marker, skipping
+  submitted trial_002_r0 as job 45121030
+  submitted trial_003_r0 as job 45121031
+  submitted trial_004_r0 as job 45121032
+  submitted trial_005_r0 as job 45121033
+  trial_002_r0             INCOMPLETE objective        n/a gate FAIL 3.0 min
+      |                            [--weight-decay WEIGHT_DECAY] [--width WIDTH]
+      |                            [--mults MULTS] [--attn ATTN] [--dropout DROPOUT]
+      |                            [--ema-decay EMA_DECAY] [--target {delta,z_y}]
+      |                            [--cond-mode {full,x-only,a-only}]
+      |                            [--diag-every DIAG_EVERY] [--diag-crops DIAG_CROPS]
+      |                            [--psd-crops PSD_CROPS] [--diag-batch DIAG_BATCH]
+      |                            [--no-keep-sampled] [--patience PATIENCE]
+      |                            [--limit LIMIT] [--workers WORKERS] [--seed SEED]
+      |                            [--leads LEADS] [--latents-dir LATENTS_DIR]
+      |                            [--vae VAE] [--out OUT] [--resume RESUME]
+      |                            [--ignore-done] [--ridge-gate RIDGE_GATE]
+      | train_regression.py: error: argument --vae: expected one argument
+  trial_003_r0             INCOMPLETE objective        n/a gate FAIL 3.0 min
+      |                            [--weight-decay WEIGHT_DECAY] [--width WIDTH]
+      |                            [--mults MULTS] [--attn ATTN] [--dropout DROPOUT]
+      |                            [--ema-decay EMA_DECAY] [--target {delta,z_y}]
+      |                            [--cond-mode {full,x-only,a-only}]
+      |                            [--diag-every DIAG_EVERY] [--diag-crops DIAG_CROPS]
+      |                            [--psd-crops PSD_CROPS] [--diag-batch DIAG_BATCH]
+      |                            [--no-keep-sampled] [--patience PATIENCE]
+      |                            [--limit LIMIT] [--workers WORKERS] [--seed SEED]
+      |                            [--leads LEADS] [--latents-dir LATENTS_DIR]
+      |                            [--vae VAE] [--out OUT] [--resume RESUME]
+      |                            [--ignore-done] [--ridge-gate RIDGE_GATE]
+      | train_regression.py: error: argument --vae: expected one argument
+  trial_004_r0             INCOMPLETE objective        n/a gate FAIL 3.0 min
+      |                            [--weight-decay WEIGHT_DECAY] [--width WIDTH]
+      |                            [--mults MULTS] [--attn ATTN] [--dropout DROPOUT]
+      |                            [--ema-decay EMA_DECAY] [--target {delta,z_y}]
+      |                            [--cond-mode {full,x-only,a-only}]
+      |                            [--diag-every DIAG_EVERY] [--diag-crops DIAG_CROPS]
+      |                            [--psd-crops PSD_CROPS] [--diag-batch DIAG_BATCH]
+      |                            [--no-keep-sampled] [--patience PATIENCE]
+      |                            [--limit LIMIT] [--workers WORKERS] [--seed SEED]
+      |                            [--leads LEADS] [--latents-dir LATENTS_DIR]
+      |                            [--vae VAE] [--out OUT] [--resume RESUME]
+      |                            [--ignore-done] [--ridge-gate RIDGE_GATE]
+      | train_regression.py: error: argument --vae: expected one argument
+  trial_005_r0             INCOMPLETE objective        n/a gate FAIL 3.0 min
+      |                            [--weight-decay WEIGHT_DECAY] [--width WIDTH]
+      |                            [--mults MULTS] [--attn ATTN] [--dropout DROPOUT]
+      |                            [--ema-decay EMA_DECAY] [--target {delta,z_y}]
+      |                            [--cond-mode {full,x-only,a-only}]
+      |                            [--diag-every DIAG_EVERY] [--diag-crops DIAG_CROPS]
+      |                            [--psd-crops PSD_CROPS] [--diag-batch DIAG_BATCH]
+      |                            [--no-keep-sampled] [--patience PATIENCE]
+      |                            [--limit LIMIT] [--workers WORKERS] [--seed SEED]
+      |                            [--leads LEADS] [--latents-dir LATENTS_DIR]
+      |                            [--vae VAE] [--out OUT] [--resume RESUME]
+      |                            [--ignore-done] [--ridge-gate RIDGE_GATE]
+      | train_regression.py: error: argument --vae: expected one argument
+
+=== study regression_coarse :: arm regression :: sampler grid :: git ae67b1d ===
+objective (maximised): val_ev = val_ev
+        admissibility: gate_c = val_ev >= 0.10
+           rung ladder: r0(60000x2), r1(200000x3)
+
+9 candidate configurations
+    0 incumbent              (incumbent)
+    1 ofat:lr                lr=5e-05
+    2 ofat:lr                lr=0.0002
+    3 ofat:lr                lr=0.0004
+    4 ofat:width             width=96
+    5 ofat:width             width=192
+    6 ofat:weight_decay      weight_decay=0.0001
+    7 ofat:weight_decay      weight_decay=0.01
+    8 ofat:dropout           dropout=0.05
+
+  rung       rows  epochs  trials  GPU-h/trial    GPU-h
+  r0        60000       2       9        0.115     1.04
+  r1       200000       3       3        0.528     1.59
+  TOTAL                                            2.62
+
+  the same 9 configurations trained to 50 epochs at full fidelity: 265 A100-hours
+  multi-fidelity screening cost: 2.6 A100-hours (1.0 percent of that)
+
+example trial command (candidate 0 at rung r0):
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py' --dropout 0.0 --lr 0.0001 --weight-decay 0.0 --width 128 --limit 60000 --epochs 2 --warmup 187 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 2 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_000_r0 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60 --target delta --cond-mode full
+
+
+---- rung r0 (60000 rows x 2 epochs) :: 9 trials ----
+  resume: trial_000_r0 already has its completion marker, skipping
+  resume: trial_001_r0 already has its completion marker, skipping
+  submitted trial_002_r0 as job 45123963
+  submitted trial_003_r0 as job 45123964
+  submitted trial_004_r0 as job 45123965
+  submitted trial_005_r0 as job 45123966
+  trial_004_r0             ok         objective    0.36866 gate pass 9.0 min
+  submitted trial_006_r0 as job 45125426
+  trial_002_r0             ok         objective    0.38511 gate pass 11.0 min
+  trial_003_r0             ok         objective    0.38417 gate pass 11.0 min
+  submitted trial_007_r0 as job 45125438
+  submitted trial_008_r0 as job 45125439
+  trial_005_r0             ok         objective    0.38360 gate pass 15.1 min
+  trial_006_r0             ok         objective    0.37864 gate pass 11.0 min
+  trial_007_r0             ok         objective    0.37949 gate pass 9.0 min
+  trial_008_r0             ok         objective    0.37406 gate pass 10.0 min
+  rung r0 ranking: 002(0.3851), 003(0.3842), 005(0.3836), 007(0.3795), 000(0.3793), 006(0.3786)
+
+---- rung r1 (200000 rows x 3 epochs) :: 3 trials ----
+  submitted trial_002_r1 as job 45126496
+  submitted trial_003_r1 as job 45126497
+  submitted trial_005_r1 as job 45126498
+  trial_002_r1             ok         objective    0.44850 gate pass 35.1 min
+  trial_003_r1             ok         objective    0.44079 gate pass 35.1 min
+  trial_005_r1             ok         objective    0.44959 gate pass 57.1 min
+  rung r1 ranking: 005(0.4496), 002(0.4485), 003(0.4408)
+
+BEST: trial_005_r1  objective 0.44958558084483413
+  differs from the incumbent on: width=192
+
+Confirm it at full fidelity before quoting it. A screening rung is a ranking statistic, not a result.
+  estimated cost: 45.9 A100-hours
+  python '/home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py' --dropout 0.0 --lr 0.0001 --weight-decay 0.0 --width 192 --epochs 50 --warmup 1000 --psd-crops 64 --patience 15 --diag-every 50 --diag-crops 16 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/regression_coarse_winner --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60 --target delta --cond-mode full
+
+total measured GPU time this study: 3.07 hours
+next: python hpo_report.py --study /home/users/dv321/dissertation_outputs/hpo/reg_coarse

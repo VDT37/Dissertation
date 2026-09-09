@@ -1,0 +1,153 @@
+{
+  "study": "/home/users/dv321/dissertation_outputs/hpo/sampler",
+  "spec": {
+    "space": "inference_grid",
+    "arm": "inference",
+    "sampler": "grid",
+    "objective": "infer_composite",
+    "objective_expr": "(1.0 - crps_fair / mae_adv) - 0.50 * abs(spread_rmse_ratio - spread_rmse_ideal)",
+    "gate": "none",
+    "gate_expr": "True",
+    "rungs": [
+      {
+        "name": "r0",
+        "rows": 3000,
+        "epochs": 0,
+        "sample_crops": 0,
+        "psd_crops": 0
+      }
+    ],
+    "eta": 3,
+    "seed": 0,
+    "sampler_seed": 0,
+    "n_trials": 24,
+    "psd_ceiling": 0.903,
+    "passthrough": [
+      "--ckpt",
+      "/home/users/dv321/dissertation_outputs/diffusion_ml_v2/ckpt_ep050.pt",
+      "--vae",
+      "/home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt",
+      "--latents-dir",
+      "/work/scratch-nopw2/dv321/dissertation/latents_ml_ep17",
+      "--split",
+      "val",
+      "--lead",
+      "60",
+      "--batch",
+      "16"
+    ],
+    "executor": "slurm",
+    "parallel": 2,
+    "prune": "none",
+    "git": "ae67b1d",
+    "created": "2026-08-10T20:00:43",
+    "space_note": "Stage 4 sampler sweep on a frozen checkpoint. One factor at a time around the production sampler setting.",
+    "reruns": 2,
+    "host": "sci-vm-01.jasmin.ac.uk"
+  },
+  "n_trials": 9,
+  "n_gate_pass": 9,
+  "best": {
+    "trial": "trial_001_r0",
+    "rung": "r0",
+    "origin": "ofat:steps",
+    "changed": "steps=18",
+    "objective": 0.47614590116808425,
+    "gate": true,
+    "mae": 0.27788875233692284,
+    "mae_over_adv": 0.8604725865150895,
+    "mae_over_pers": 0.7334610400277274,
+    "crps": 0.16892306353746703,
+    "crps_ss_adv": 0.47693577310425017,
+    "crps_ss_pers": 0.5541435742723361,
+    "csi_1": 0.40432272153863863,
+    "csi_8": 0.07913882296556175,
+    "psd": 0.9857084782697256,
+    "val_loss": null,
+    "gpu_h": null,
+    "params": {
+      "churn": 0.0,
+      "guidance": 1.0,
+      "members": 8,
+      "steps": 18
+    }
+  },
+  "ofat_effects": [
+    {
+      "rung": "r0",
+      "param": "guidance",
+      "value": 1.5,
+      "incumbent": 1.0,
+      "objective": 0.3953833413577859,
+      "delta": -0.06779872019455824,
+      "trial": "trial_006_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "guidance",
+      "value": 1.25,
+      "incumbent": 1.0,
+      "objective": 0.42959096212556697,
+      "delta": -0.03359109942677718,
+      "trial": "trial_005_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "steps",
+      "value": 18,
+      "incumbent": 25,
+      "objective": 0.47614590116808425,
+      "delta": 0.012963839615740103,
+      "trial": "trial_001_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "steps",
+      "value": 50,
+      "incumbent": 25,
+      "objective": 0.451081159958194,
+      "delta": -0.01210090159415017,
+      "trial": "trial_002_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "churn",
+      "value": 40.0,
+      "incumbent": 0.0,
+      "objective": 0.4598891883733511,
+      "delta": -0.003292873178993072,
+      "trial": "trial_008_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "churn",
+      "value": 10.0,
+      "incumbent": 0.0,
+      "objective": 0.46063527322363573,
+      "delta": -0.002546788328708416,
+      "trial": "trial_007_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "members",
+      "value": 16,
+      "incumbent": 8,
+      "objective": 0.4611831465459845,
+      "delta": -0.001998915006359625,
+      "trial": "trial_004_r0"
+    },
+    {
+      "rung": "r0",
+      "param": "members",
+      "value": 4,
+      "incumbent": 8,
+      "objective": 0.4650553382436658,
+      "delta": 0.0018732766913216459,
+      "trial": "trial_003_r0"
+    }
+  ],
+  "transfer": [],
+  "gpu_h_measured": 3.41,
+  "gpu_h_planned": 9.02,
+  "gpu_h_if_full_fidelity": 0.0
+}

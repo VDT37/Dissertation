@@ -1,0 +1,69 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-473309de-1d4b-ef1d-5b23-76aa0d2b7946)
+host gpuhost015.jc.rl.ac.uk | CUDA ok | Mon 10 Aug 23:48:45 BST 2026
+args: python /home/users/dv321/dissertation/Code/3 - Diffusion stage/train_regression.py --dropout 0.0 --lr 0.0002 --weight-decay 0.0 --width 128 --limit 200000 --epochs 3 --warmup 938 --psd-crops 96 --patience 0 --no-keep-sampled --diag-every 3 --diag-crops 96 --seed 0 --out /home/users/dv321/dissertation_outputs/hpo/reg_coarse/trial_002_r1 --latents-dir /work/scratch-nopw2/dv321/dissertation/latents_ml_ep17 --vae /home/users/dv321/dissertation_outputs/vae_v2/vae_ep17.pt --leads 15,30,45,60 --target delta --cond-mode full
+target=delta | pooled std 0.7407 | mean +0.0619 | E[target^2] train 0.5525 val 0.5604
+  per shard: [+15min sd 0.5800 E[t^2] 0.3395, +30min sd 0.7073 E[t^2] 0.5038, +45min sd 0.7921 E[t^2] 0.6314, +60min sd 0.8546 E[t^2] 0.7352]
+diagnostics: 96 fixed val crops (rows 0..19999)
+device=cuda | R_phi 65.7M params | cond=full (20ch) -> 4ch | latent_scale=0.784
+train rows 200000 | val rows 20000 | 3125 steps/epoch (batch 64)
+data-path check: batch E[target^2] 0.4301 vs pack meta 0.5604 (ratio 0.768) | untrained MSE 0.4301 -> EV +0.0000 (must be ~0.000 on a fresh start)
+  ep1 step 200/3125 | mse 0.4800 (win 0.4800) | EV 0.131 (win 0.131) | lr 4.24e-05 | gn 1.04 | 307 img/s
+  ep1 step 400/3125 | mse 0.4388 (win 0.3977) | EV 0.206 (win 0.280) | lr 8.51e-05 | gn 0.91 | 317 img/s
+  ep1 step 600/3125 | mse 0.4120 (win 0.3583) | EV 0.254 (win 0.351) | lr 1.28e-04 | gn 0.87 | 320 img/s
+  ep1 step 800/3125 | mse 0.3940 (win 0.3401) | EV 0.287 (win 0.384) | lr 1.70e-04 | gn 0.81 | 322 img/s
+  ep1 step 1000/3125 | mse 0.3829 (win 0.3385) | EV 0.307 (win 0.387) | lr 2.00e-04 | gn 0.76 | 322 img/s
+  ep1 step 1200/3125 | mse 0.3748 (win 0.3342) | EV 0.322 (win 0.395) | lr 2.00e-04 | gn 0.73 | 323 img/s
+  ep1 step 1400/3125 | mse 0.3685 (win 0.3304) | EV 0.333 (win 0.402) | lr 1.99e-04 | gn 0.69 | 324 img/s
+  ep1 step 1600/3125 | mse 0.3635 (win 0.3284) | EV 0.342 (win 0.406) | lr 1.97e-04 | gn 0.67 | 324 img/s
+  ep1 step 1800/3125 | mse 0.3593 (win 0.3257) | EV 0.350 (win 0.410) | lr 1.95e-04 | gn 0.65 | 324 img/s
+  ep1 step 2000/3125 | mse 0.3556 (win 0.3226) | EV 0.356 (win 0.416) | lr 1.92e-04 | gn 0.63 | 324 img/s
+  ep1 step 2200/3125 | mse 0.3528 (win 0.3243) | EV 0.362 (win 0.413) | lr 1.89e-04 | gn 0.61 | 325 img/s
+  ep1 step 2400/3125 | mse 0.3502 (win 0.3215) | EV 0.366 (win 0.418) | lr 1.86e-04 | gn 0.60 | 325 img/s
+  ep1 step 2600/3125 | mse 0.3477 (win 0.3187) | EV 0.371 (win 0.423) | lr 1.81e-04 | gn 0.58 | 325 img/s
+  ep1 step 2800/3125 | mse 0.3458 (win 0.3201) | EV 0.374 (win 0.421) | lr 1.77e-04 | gn 0.57 | 325 img/s
+  ep1 step 3000/3125 | mse 0.3439 (win 0.3173) | EV 0.378 (win 0.426) | lr 1.72e-04 | gn 0.56 | 325 img/s
+epoch   1/3 | train mse 0.34279 (EV 0.3795) | val mse 0.32500 (EV 0.4201) | 615s | 325 img/s | GPU 14.1 GB
+  val EV per lead: +15min 0.3766, +30min 0.4112, +45min 0.4252, +60min 0.4412
+  ABORT-B (PASS) after epoch 1: val EV 0.4201 against threshold 0.020
+  new best (val MSE 0.32500, EV 0.4201) -> reg_best.pt
+  ep2 step 200/3125 | mse 0.3140 (win 0.3140) | EV 0.432 (win 0.432) | lr 1.63e-04 | gn 0.37 | 325 img/s
+  ep2 step 400/3125 | mse 0.3153 (win 0.3166) | EV 0.429 (win 0.427) | lr 1.57e-04 | gn 0.40 | 326 img/s
+  ep2 step 600/3125 | mse 0.3150 (win 0.3145) | EV 0.430 (win 0.431) | lr 1.51e-04 | gn 0.39 | 326 img/s
+  ep2 step 800/3125 | mse 0.3144 (win 0.3126) | EV 0.431 (win 0.434) | lr 1.44e-04 | gn 0.40 | 326 img/s
+  ep2 step 1000/3125 | mse 0.3141 (win 0.3127) | EV 0.432 (win 0.434) | lr 1.38e-04 | gn 0.39 | 326 img/s
+  ep2 step 1200/3125 | mse 0.3137 (win 0.3116) | EV 0.432 (win 0.436) | lr 1.31e-04 | gn 0.39 | 326 img/s
+  ep2 step 1400/3125 | mse 0.3132 (win 0.3106) | EV 0.433 (win 0.438) | lr 1.23e-04 | gn 0.39 | 326 img/s
+  ep2 step 1600/3125 | mse 0.3128 (win 0.3095) | EV 0.434 (win 0.440) | lr 1.16e-04 | gn 0.38 | 326 img/s
+  ep2 step 1800/3125 | mse 0.3128 (win 0.3130) | EV 0.434 (win 0.433) | lr 1.09e-04 | gn 0.38 | 326 img/s
+  ep2 step 2000/3125 | mse 0.3125 (win 0.3097) | EV 0.434 (win 0.439) | lr 1.01e-04 | gn 0.38 | 326 img/s
+  ep2 step 2200/3125 | mse 0.3119 (win 0.3065) | EV 0.435 (win 0.445) | lr 9.38e-05 | gn 0.37 | 326 img/s
+  ep2 step 2400/3125 | mse 0.3115 (win 0.3072) | EV 0.436 (win 0.444) | lr 8.64e-05 | gn 0.37 | 326 img/s
+  ep2 step 2600/3125 | mse 0.3113 (win 0.3083) | EV 0.437 (win 0.442) | lr 7.90e-05 | gn 0.36 | 326 img/s
+  ep2 step 2800/3125 | mse 0.3109 (win 0.3059) | EV 0.437 (win 0.446) | lr 7.18e-05 | gn 0.36 | 326 img/s
+  ep2 step 3000/3125 | mse 0.3106 (win 0.3062) | EV 0.438 (win 0.446) | lr 6.47e-05 | gn 0.35 | 326 img/s
+epoch   2/3 | train mse 0.31046 (EV 0.4381) | val mse 0.31233 (EV 0.4427) | 613s | 326 img/s | GPU 14.1 GB
+  val EV per lead: +15min 0.4019, +30min 0.4334, +45min 0.4470, +60min 0.4635
+  new best (val MSE 0.31233, EV 0.4427) -> reg_best.pt
+  ep3 step 200/3125 | mse 0.3049 (win 0.3049) | EV 0.448 (win 0.448) | lr 5.37e-05 | gn 0.30 | 325 img/s
+  ep3 step 400/3125 | mse 0.3038 (win 0.3027) | EV 0.450 (win 0.452) | lr 4.72e-05 | gn 0.29 | 326 img/s
+  ep3 step 600/3125 | mse 0.3032 (win 0.3021) | EV 0.451 (win 0.453) | lr 4.11e-05 | gn 0.28 | 326 img/s
+  ep3 step 800/3125 | mse 0.3031 (win 0.3027) | EV 0.451 (win 0.452) | lr 3.52e-05 | gn 0.28 | 326 img/s
+  ep3 step 1000/3125 | mse 0.3026 (win 0.3003) | EV 0.452 (win 0.456) | lr 2.97e-05 | gn 0.28 | 326 img/s
+  ep3 step 1200/3125 | mse 0.3022 (win 0.3007) | EV 0.453 (win 0.456) | lr 2.46e-05 | gn 0.28 | 326 img/s
+  ep3 step 1400/3125 | mse 0.3021 (win 0.3015) | EV 0.453 (win 0.454) | lr 2.00e-05 | gn 0.28 | 326 img/s
+  ep3 step 1600/3125 | mse 0.3016 (win 0.2977) | EV 0.454 (win 0.461) | lr 1.57e-05 | gn 0.27 | 326 img/s
+  ep3 step 1800/3125 | mse 0.3011 (win 0.2974) | EV 0.455 (win 0.462) | lr 1.19e-05 | gn 0.27 | 327 img/s
+  ep3 step 2000/3125 | mse 0.3007 (win 0.2968) | EV 0.456 (win 0.463) | lr 8.66e-06 | gn 0.27 | 327 img/s
+  ep3 step 2200/3125 | mse 0.3004 (win 0.2979) | EV 0.456 (win 0.461) | lr 5.89e-06 | gn 0.26 | 327 img/s
+  ep3 step 2400/3125 | mse 0.3003 (win 0.2990) | EV 0.456 (win 0.459) | lr 3.63e-06 | gn 0.26 | 327 img/s
+  ep3 step 2600/3125 | mse 0.3001 (win 0.2977) | EV 0.457 (win 0.461) | lr 1.91e-06 | gn 0.26 | 327 img/s
+  ep3 step 2800/3125 | mse 0.3002 (win 0.3007) | EV 0.457 (win 0.456) | lr 7.36e-07 | gn 0.25 | 327 img/s
+  ep3 step 3000/3125 | mse 0.3001 (win 0.2998) | EV 0.457 (win 0.457) | lr 1.10e-07 | gn 0.25 | 327 img/s
+epoch   3/3 | train mse 0.30005 (EV 0.4569) | val mse 0.30907 (EV 0.4485) | 612s | 327 img/s | GPU 14.1 GB
+  val EV per lead: +15min 0.4084, +30min 0.4394, +45min 0.4527, +60min 0.4690
+  decoded: MAE 0.190 (adv 0.244) | CSI@1 0.485 (adv 0.427) | CSI@8 0.088 (adv 0.061) | PSD 2-8km band power 0.08 (adv 0.58)
+  new best (val MSE 0.30907, EV 0.4485) -> reg_best.pt
+
+GATE-C (PASS): pooled val EV 0.4485 against threshold 0.10. sigma_data would fall 0.7407 -> 0.5501 (25.7%).
+
+completed: total 32.1 min | best val MSE 0.30907 (ep3) | DONE written -> the sbatch chain will stop
