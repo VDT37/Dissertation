@@ -78,7 +78,7 @@ python "Code/3 - Diffusion stage/pool_leads.py"
 
 `build_prior.py` is CPU-only and is the only stage that touches the network (downloads radar from the AWS Open Data bucket). Everything after `pack_latents.py` needs a GPU. Most scripts cache their output and skip work that is already done, so rerunning after a crash is usually fine.
 
-## Limitations (from the report)
+## Limitations
 
 - The held-out 2026 test evidence exists at +60 minutes only. The lead-time trend (skill growing with lead) is a validation-only claim.
 - The checkpoint-selection rule's tiebreak used a 16-crop in-training diagnostic that understates member spectral power by 15-32%, and Arm B's checkpoint choice is sensitive to the tie tolerance (a slightly looser tolerance picks a different epoch).
